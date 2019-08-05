@@ -1,9 +1,10 @@
 # lietuviska-tv
 
-Tai yra tiesiog scriptas, kuris sugeneruoja 3 kanalų `m3u` (_IPTV playlist_) compatible playlist'ą:
+Tai yra tiesiog scriptas, kuris sugeneruoja šių kanalų `m3u` (_IPTV playlist_) compatible playlist'ą:
 * LNK HD
 * TV3 HD
 * INFO TV HD
+* Lietuvos rytas HD
 
 Viskas imama iš viešai prieinamų live streamų internetu. Iš pačių LNK ir TV3 rankų, su žiupsneliu hackų :)
 
