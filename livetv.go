@@ -46,7 +46,7 @@ func generate() {
 	loadFromFile()
 
 	// First, we need to download JSON from lnk api to see what is currently live:
-	videosJSON, err := downloadJSON("https://lnk.lt/api/main/live-page")
+	videosJSON, err := downloadContent("https://lnk.lt/api/main/live-page")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
@@ -70,6 +70,14 @@ func generate() {
 		}
 
 	}
+
+	// Lietuvos rytas TV hack as well:
+	lietuvosRytasURL, err := downloadContent("https://lib.lrytas.lt/geoip/get_token_live.php")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+	addEntry("Lietuvos rytas HD", "https://www.telia.lt/documents/20184/3686852/LRYTAS+TV+LOGOTIPAS.png", string(lietuvosRytasURL))
 
 	saveToFile()
 
@@ -121,10 +129,34 @@ func saveToFile() {
 }
 
 // addEntry appends new entry to 'tvlinks' if it already exists (in terms of 'title' attribute)
-func addEntry(title, picture, id string) {
+func addEntry(title, picture, url string) {
 
+	existsInArray := false
+	for i, tvl := range tvlinks {
+		if tvl.Title != title {
+			continue
+		}
+		existsInArray = true
+		// Update existing entry:
+		tvlinks[i].Picture = picture
+		tvlinks[i].URL = url
+		break
+	}
+
+	if !existsInArray {
+		// Add new entry
+		tv := tvlink{
+			Title:   title,
+			Picture: picture,
+			URL:     url,
+		}
+		tvlinks = append(tvlinks, tv)
+	}
+}
+
+func processLnkChannel(title, picture, id string) {
 	// download another JSON
-	videoJSON, err := downloadJSON("https://lnk.lt/api/main/video-page/xD/" + id + "/false")
+	videoJSON, err := downloadContent("https://lnk.lt/api/main/video-page/xD/" + id + "/false")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
@@ -136,32 +168,11 @@ func addEntry(title, picture, id string) {
 	level2 := level1["videoInfo"].(map[string]interface{})
 
 	myURL := fmt.Sprintf("%v%v", level2["videoUrl"], level2["secureTokenParams"])
-
-	existsInArray := false
-	for i, tvl := range tvlinks {
-		if tvl.Title != title {
-			continue
-		}
-		existsInArray = true
-		// Update existing entry:
-		tvlinks[i].Picture = picture
-		tvlinks[i].URL = myURL
-	}
-
-	if !existsInArray {
-		// Add new entry
-		tv := tvlink{
-			Title:   title,
-			Picture: picture,
-			URL:     myURL,
-		}
-		tvlinks = append(tvlinks, tv)
-	}
-
+	addEntry(title, picture, myURL)
 }
 
 // downloadJSON downloads data. It's basically shortcut for GET request
-func downloadJSON(url string) ([]byte, error) {
+func downloadContent(url string) ([]byte, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, err
