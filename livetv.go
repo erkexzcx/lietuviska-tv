@@ -63,10 +63,10 @@ func generate() {
 		title := fmt.Sprintf("%v", el["title"])
 		if title == "Žinios" {
 			id := fmt.Sprintf("%v", el["id"])
-			addEntry("LNK HD", "https://www.telia.lt/documents/20184/3686852/LNK-LOGO-HD.png", id)
+			processLnkChannel("LNK HD", "https://www.telia.lt/documents/20184/3686852/LNK-LOGO-HD.png", id)
 		} else if title == "INFO TV HD kanalas internetu!" {
 			id := fmt.Sprintf("%v", el["id"])
-			addEntry("INFO TV HD", "https://www.telia.lt/documents/20184/3686852/INFO-LOGO-HD.png", id)
+			processLnkChannel("INFO TV HD", "https://www.telia.lt/documents/20184/3686852/INFO-LOGO-HD.png", id)
 		}
 
 	}
@@ -87,8 +87,8 @@ func generate() {
 func show() {
 	loadFromFile()
 
+	fmt.Println("#EXTM3U")
 	for _, tv := range tvlinks {
-		fmt.Println("#EXTM3U")
 		fmt.Println("#EXTINF:-1 group-title=\"LT\" tvg-id=\"\" tvg-logo=\"" + tv.Picture + "\", " + tv.Title)
 		fmt.Println(tv.URL)
 		fmt.Println()
