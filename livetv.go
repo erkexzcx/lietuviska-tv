@@ -43,8 +43,42 @@ func main() {
 // generate regenerates and updates file
 func generate() {
 
-	loadFromFile()
+	loadFromFile() // This function also adds some static live TVs (AKA TV3).
 
+	generateLnkGroup()
+	generateLietuvosRytas()
+	generateLTV()
+
+	saveToFile()
+
+}
+
+func generateLTV() {
+	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV1")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	var result map[string]interface{}
+	json.Unmarshal([]byte(ltvURL), &result)
+	level1 := result["response"].(map[string]interface{})
+	level2 := level1["data"].(map[string]interface{})
+	url := fmt.Sprintf("%v", level2["content"])
+
+	addEntry("LRT HD", "https://www.telia.lt/documents/20184/3686852/LRT_262x262.png", url)
+}
+
+func generateLietuvosRytas() {
+	lietuvosRytasURL, err := downloadContent("https://lib.lrytas.lt/geoip/get_token_live.php")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+	addEntry("Lietuvos rytas HD", "https://www.telia.lt/documents/20184/3686852/LRYTAS+TV+LOGOTIPAS.png", string(lietuvosRytasURL))
+}
+
+func generateLnkGroup() {
 	// First, we need to download JSON from lnk api to see what is currently live:
 	videosJSON, err := downloadContent("https://lnk.lt/api/main/live-page")
 	if err != nil {
@@ -70,17 +104,6 @@ func generate() {
 		}
 
 	}
-
-	// Lietuvos rytas TV hack as well:
-	lietuvosRytasURL, err := downloadContent("https://lib.lrytas.lt/geoip/get_token_live.php")
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-	}
-	addEntry("Lietuvos rytas HD", "https://www.telia.lt/documents/20184/3686852/LRYTAS+TV+LOGOTIPAS.png", string(lietuvosRytasURL))
-
-	saveToFile()
-
 }
 
 // show shows compiled m3u playlist from what is in the file
@@ -106,7 +129,7 @@ func loadFromFile() {
 			os.Exit(1)
 		}
 	} else {
-		// Define list of static live TVs
+		// Add some static links to the list:
 		tv3 := tvlink{
 			Title:   "TV3 HD",
 			Picture: "https://www.telia.lt/documents/20184/3686852/tv3-on-white.png",
