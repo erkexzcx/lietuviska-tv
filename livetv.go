@@ -95,7 +95,7 @@ func generateLnkGroup() {
 		el := v.(map[string]interface{})
 
 		title := fmt.Sprintf("%v", el["title"])
-		if title == "Žinios" {
+		if title == "Žinios" || title == "Labas vakaras, Lietuva" {
 			id := fmt.Sprintf("%v", el["id"])
 			processLnkChannel("LNK HD", "https://www.telia.lt/documents/20184/3686852/LNK-LOGO-HD.png", id)
 		} else if title == "INFO TV HD kanalas internetu!" {
