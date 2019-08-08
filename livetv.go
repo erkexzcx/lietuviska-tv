@@ -112,9 +112,7 @@ func show() {
 
 	fmt.Println("#EXTM3U")
 	for _, tv := range tvlinks {
-		fmt.Println("#EXTINF:-1 group-title=\"LT\" tvg-id=\"\" tvg-logo=\"" + tv.Picture + "\", " + tv.Title)
-		fmt.Println(tv.URL)
-		fmt.Println()
+		fmt.Printf("#EXTINF:-1 group-title=\"LT\" tvg-id=\"\" tvg-logo=\"%s\", %s\n%s\n\n", tv.Picture, tv.Title, tv.URL)
 	}
 }
 
