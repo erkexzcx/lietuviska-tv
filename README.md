@@ -50,4 +50,18 @@ https://live.lnk.lt/lnk_live/lnk/playlist.m3u8?tokenstarttime=0&tokenendtime=156
 ```
 8. KODI --> _Simple IPTV_ plugine nurodote savo server pakurto PHP failo URL. EPG galima susigeneruoti patiems su [WebGrabber++](http://www.webgrabplus.com/).
 
-Jeigu kas neveikia arba niekaip neišeina pasidaryti - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues) :)
+Jeigu žemiau sekcija nepadėjo - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues)
+
+# Troubleshooting
+
+## Nieko nerodo (arba Error 403)
+
+Veikia tik iš to paties public IP. Tai reiškia, kad tiek serveris, tiek jūs turite būti po tuo pačiu public IP adresu.
+
+## TV3 atsilieka garsas
+
+Nežinau kas konkrečiai dėl to kaltas, nes šitas issue galioja tik VLC playeriui (kiek bandžiau). Kodi neturi šitos problemos. Ant VLC reik spaust dešinį pelės klavišą ant rodomo video --> `tools` --> `Track synchronization` --> `Audio track synchronization` ir pakeisk į `-1`.
+
+## Nerodo LNK
+
+LNK rodo tokiu principu - kai kuriuo nors metu per LNK GO rodo kokią nors tiesioginią transliaciją, scriptas tuo metu gali nuparsinti `M3U8` nuorodą per kurią galima žiūrėti LNK TV. Kai transliacija baigiasi - nuorodos nebelieka, tačiau scriptas iš atminties išsitraukia paskutinę galimą nuorodą kuri dažniausiai veikia iki kitos dienos pietų.
