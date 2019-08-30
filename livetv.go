@@ -47,13 +47,14 @@ func generate() {
 
 	generateLnkGroup()
 	generateLietuvosRytas()
-	generateLTV()
+	generateLRT()
+	generateLRTPlius()
 
 	saveToFile()
 
 }
 
-func generateLTV() {
+func generateLRT() {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV1")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -67,6 +68,22 @@ func generateLTV() {
 	url := fmt.Sprintf("%v", level2["content"])
 
 	addEntry("LRT HD", "https://www.telia.lt/documents/20184/3686852/LRT_262x262.png", url)
+}
+
+func generateLRTPlius() {
+	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV2")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+
+	var result map[string]interface{}
+	json.Unmarshal([]byte(ltvURL), &result)
+	level1 := result["response"].(map[string]interface{})
+	level2 := level1["data"].(map[string]interface{})
+	url := fmt.Sprintf("%v", level2["content"])
+
+	addEntry("LRT Plius HD", "https://i.imgur.com/xP9oCH3.png", url)
 }
 
 func generateLietuvosRytas() {
@@ -112,7 +129,7 @@ func show() {
 
 	fmt.Println("#EXTM3U")
 	for _, tv := range tvlinks {
-		fmt.Printf("#EXTINF:-1 group-title=\"LT\" tvg-id=\"\" tvg-logo=\"%s\", %s\n%s\n\n", tv.Picture, tv.Title, tv.URL)
+		fmt.Printf("#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tv.Picture, tv.Title, tv.URL)
 	}
 }
 
