@@ -4,57 +4,98 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
+	"sync"
+	"time"
 )
 
-type tvlink struct {
-	Title   string `json:"title"`
+// Define all channels here. Code will keep updating
+// URLs, while web server won't show these channels
+// without URL.
+var tvlist = map[string]tvchannel{
+	"TV3": tvchannel{
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_303_1418375193.png",
+		URL:     "https://cdn7.tvplayhome.lt/live/eds/TV3_LT_HD/HLS_encr/TV3_LT_HD.m3u8",
+	},
+	"LNK": tvchannel{
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_301_1520339152.png",
+		URL:     "",
+	},
+	"INFO TV": tvchannel{
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_326_1467119944.png",
+		URL:     "",
+	},
+	"LRT": tvchannel{
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_306_1488445569.png",
+		URL:     "",
+	},
+	"LRT Plius": tvchannel{
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_307_1538382450.png",
+		URL:     "",
+	},
+	"Lietuvos rytas": tvchannel{
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_318_1539885851.png",
+		URL:     "",
+	},
+}
+
+var tvlistMutex = &sync.Mutex{}
+
+type tvchannel struct {
 	Picture string `json:"picture"`
 	URL     string `json:"url"`
 }
 
-var tvlinks = []tvlink{}
-
-const fileFullPath = "links.json"
-
 func main() {
 
-	showTheAmazingError := func() {
-		fmt.Fprintf(os.Stderr, "error: No argument was provided. Either use \"%v generate\" or \"%v show\"\n", os.Args[0], os.Args[0])
-		os.Exit(1)
-	}
+	// Run linkUpdater in the background
+	go linkUpdater()
 
-	args := os.Args
-	if len(args) != 2 {
-		showTheAmazingError()
-	}
-	switch os.Args[1] {
-	case "generate":
-		generate()
-	case "show":
-		show()
-	default:
-		showTheAmazingError()
-	}
+	http.HandleFunc("/iptv", func(w http.ResponseWriter, r *http.Request) {
+		renderPlaylist(&w)
+	})
+
+	http.HandleFunc("/epg", func(w http.ResponseWriter, r *http.Request) {
+		// TODO
+	})
+
+	log.Fatal(http.ListenAndServe(":8989", nil))
 
 }
 
-// generate regenerates and updates file
-func generate() {
+func renderPlaylist(w *http.ResponseWriter) {
 
-	loadFromFile() // This function also adds some static live TVs (AKA TV3).
+	// Some channels are always available, just direct link is needed to be parsed
+	var wg sync.WaitGroup
+	wg.Add(3)
 
-	generateLnkGroup()
-	generateLietuvosRytas()
-	generateLRT()
-	generateLRTPlius()
+	go generateLietuvosRytas(&wg)
+	go generateLRT(&wg)
+	go generateLRTPlius(&wg)
 
-	saveToFile()
+	wg.Wait()
 
+	fmt.Fprintln(*w, "#EXTM3U")
+	tvlistMutex.Lock()
+	for name, channel := range tvlist {
+		if channel.URL == "" {
+			continue
+		}
+		fmt.Fprintf(*w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", channel.Picture, name, channel.URL)
+	}
+	tvlistMutex.Unlock()
 }
 
-func generateLRT() {
+func linkUpdater() {
+	for {
+		generateLnkGroup()
+		time.Sleep(10 * time.Minute)
+	}
+}
+
+func generateLRT(wg *sync.WaitGroup) {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV1")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -67,10 +108,16 @@ func generateLRT() {
 	level2 := level1["data"].(map[string]interface{})
 	url := fmt.Sprintf("%v", level2["content"])
 
-	addEntry("LRT HD", "https://www.telia.lt/documents/20184/3686852/LRT_262x262.png", url)
+	tvlistMutex.Lock()
+	x := tvlist["LRT"]
+	x.URL = url
+	tvlist["LRT"] = x
+	tvlistMutex.Unlock()
+
+	wg.Done()
 }
 
-func generateLRTPlius() {
+func generateLRTPlius(wg *sync.WaitGroup) {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV2")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -83,16 +130,29 @@ func generateLRTPlius() {
 	level2 := level1["data"].(map[string]interface{})
 	url := fmt.Sprintf("%v", level2["content"])
 
-	addEntry("LRT Plius HD", "https://i.imgur.com/xP9oCH3.png", url)
+	tvlistMutex.Lock()
+	x := tvlist["LRT Plius"]
+	x.URL = url
+	tvlist["LRT Plius"] = x
+	tvlistMutex.Unlock()
+
+	wg.Done()
 }
 
-func generateLietuvosRytas() {
+func generateLietuvosRytas(wg *sync.WaitGroup) {
 	lietuvosRytasURL, err := downloadContent("https://lib.lrytas.lt/geoip/get_token_live.php")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
-	addEntry("Lietuvos rytas HD", "https://www.telia.lt/documents/20184/3686852/LRYTAS+TV+LOGOTIPAS.png", string(lietuvosRytasURL))
+
+	tvlistMutex.Lock()
+	x := tvlist["Lietuvos rytas HD"]
+	x.URL = string(lietuvosRytasURL)
+	tvlist["Lietuvos rytas HD"] = x
+	tvlistMutex.Unlock()
+
+	wg.Done()
 }
 
 func generateLnkGroup() {
@@ -114,85 +174,16 @@ func generateLnkGroup() {
 		title := fmt.Sprintf("%v", el["title"])
 		if title == "Žinios" || title == "Labas vakaras, Lietuva" {
 			id := fmt.Sprintf("%v", el["id"])
-			processLnkChannel("LNK HD", "https://www.telia.lt/documents/20184/3686852/LNK-LOGO-HD.png", id)
+			processLnkChannel("LNK HD", id)
 		} else if title == "INFO TV HD kanalas internetu!" {
 			id := fmt.Sprintf("%v", el["id"])
-			processLnkChannel("INFO TV HD", "https://www.telia.lt/documents/20184/3686852/INFO-LOGO-HD.png", id)
+			processLnkChannel("INFO TV HD", id)
 		}
 
 	}
 }
 
-// show shows compiled m3u playlist from what is in the file
-func show() {
-	loadFromFile()
-
-	fmt.Println("#EXTM3U")
-	for _, tv := range tvlinks {
-		fmt.Printf("#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tv.Picture, tv.Title, tv.URL)
-	}
-}
-
-// loadFromFile reads from file and save output to variable 'tvlinks'
-func loadFromFile() {
-	// Read file and attempt to parse previously known link
-	content, err := ioutil.ReadFile(fileFullPath)
-	if err == nil {
-		err = json.Unmarshal(content, &tvlinks)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "error: %v\n", err)
-			os.Exit(1)
-		}
-	} else {
-		// Add some static links to the list:
-		tv3 := tvlink{
-			Title:   "TV3 HD",
-			Picture: "https://www.telia.lt/documents/20184/3686852/tv3-on-white.png",
-			URL:     "https://cdn7.tvplayhome.lt/live/eds/TV3_LT_HD/HLS_encr/TV3_LT_HD.m3u8",
-		}
-		tvlinks = append(tvlinks, tv3)
-	}
-}
-
-// saveToFile writes variable 'tvlinks' to file
-func saveToFile() {
-	// Write changes back to file:
-	jsonTvLinks, _ := json.Marshal(tvlinks)
-	f, err := os.Create(fileFullPath)
-	check(err)
-	defer f.Close()
-	_, err = f.Write(jsonTvLinks)
-	check(err)
-	f.Sync()
-}
-
-// addEntry appends new entry to 'tvlinks' if it already exists (in terms of 'title' attribute)
-func addEntry(title, picture, url string) {
-
-	existsInArray := false
-	for i, tvl := range tvlinks {
-		if tvl.Title != title {
-			continue
-		}
-		existsInArray = true
-		// Update existing entry:
-		tvlinks[i].Picture = picture
-		tvlinks[i].URL = url
-		break
-	}
-
-	if !existsInArray {
-		// Add new entry
-		tv := tvlink{
-			Title:   title,
-			Picture: picture,
-			URL:     url,
-		}
-		tvlinks = append(tvlinks, tv)
-	}
-}
-
-func processLnkChannel(title, picture, id string) {
+func processLnkChannel(title, id string) {
 	// download another JSON
 	videoJSON, err := downloadContent("https://lnk.lt/api/main/video-page/xD/" + id + "/false")
 	if err != nil {
@@ -206,7 +197,13 @@ func processLnkChannel(title, picture, id string) {
 	level2 := level1["videoInfo"].(map[string]interface{})
 
 	myURL := fmt.Sprintf("%v%v", level2["videoUrl"], level2["secureTokenParams"])
-	addEntry(title, picture, myURL)
+
+	tvlistMutex.Lock()
+	x := tvlist[title]
+	x.URL = myURL
+	tvlist[title] = x
+	tvlistMutex.Unlock()
+
 }
 
 // downloadJSON downloads data. It's basically shortcut for GET request
