@@ -147,9 +147,9 @@ func generateLietuvosRytas(wg *sync.WaitGroup) {
 	}
 
 	tvlistMutex.Lock()
-	x := tvlist["Lietuvos rytas HD"]
+	x := tvlist["Lietuvos rytas"]
 	x.URL = string(lietuvosRytasURL)
-	tvlist["Lietuvos rytas HD"] = x
+	tvlist["Lietuvos rytas"] = x
 	tvlistMutex.Unlock()
 
 	wg.Done()
@@ -174,10 +174,10 @@ func generateLnkGroup() {
 		title := fmt.Sprintf("%v", el["title"])
 		if title == "Žinios" || title == "Labas vakaras, Lietuva" {
 			id := fmt.Sprintf("%v", el["id"])
-			processLnkChannel("LNK HD", id)
+			processLnkChannel("LNK", id)
 		} else if title == "INFO TV HD kanalas internetu!" {
 			id := fmt.Sprintf("%v", el["id"])
-			processLnkChannel("INFO TV HD", id)
+			processLnkChannel("INFO TV", id)
 		}
 
 	}
