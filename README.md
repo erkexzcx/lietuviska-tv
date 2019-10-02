@@ -15,7 +15,7 @@ Viskas imama iš viešai prieinamų stream'ų internetu. Iš pačių LNK ir TV3 
 
 1. Perskaitote [#Troubleshooting](#Troubleshooting) ir įsitikinate, kad viskas jus tenkina.
 2. Atsisiunčiate sukompiliuotą executable iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
-3. Pasileidžiate programą. Kad nereiktų services rašyt, aš ant RPI naudoju `nohup ./livetv-linux-arm &`.
+3. Pasileidžiate programą. Kad nereiktų jokių SystemD services ar cronjob rašyt, aš ant RPI tiesiog naudoju `nohup ./livetv-linux-arm &`.
 4. IPTV playlistas bus pasiekiamas per `http://<ipaddress>:8989/iptv`
 
 # Troubleshooting
