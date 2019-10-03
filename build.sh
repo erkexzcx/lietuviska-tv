@@ -1,5 +1,10 @@
-
 #!/usr/bin/env bash
+
+# Make sure we are running this script from project's directory
+if ! [ -d "src" ]; then
+	echo "Please run this script from project's directory! Exitting..."
+	exit 1
+fi
 
 package_name="livetv"
 
@@ -20,18 +25,21 @@ platforms=(
 )
 
 for platform in "${platforms[@]}"; do
+
     platform_split=(${platform//\// })
     GOOS=${platform_split[0]}
     GOARCH=${platform_split[1]}
     output_name=$package_name'-'$GOOS'-'$GOARCH
     if [ $GOOS = "windows" ]; then
         output_name+='.exe'
-    fi  
+    fi
 
-    env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name *.go
+    env GOOS=$GOOS GOARCH=$GOARCH go build -o dist/$output_name src/*.go
     if [ $? -ne 0 ]; then
-        echo 'An error has occurred! Aborting the script execution...'
+        echo 'Error occured during GO build! Exitting...'
         exit 1
     fi
+
 done
 
+echo 'Building completed!'
