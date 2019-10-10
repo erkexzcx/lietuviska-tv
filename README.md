@@ -1,5 +1,7 @@
 # lietuviska-tv
 
+[![Github All Releases](https://img.shields.io/github/downloads/erkexzcx/lietuviska-tv/total.svg)](https://github.com/erkexzcx/lietuviska-tv/releases)
+
 Ši programa sugeneruoja šių kanalų `m3u` (_IPTV playlist_) compatible playlist'ą, kurį galima naudoti Kodi/VLC programose ir taip nemokamai žiūrėti lietuvišką TV internetu.
 
 * LNK HD
