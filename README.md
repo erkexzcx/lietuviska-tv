@@ -62,3 +62,4 @@ Jei nori pasileisti ant platformos, kurios nėra pateiktuose binaries (pvz OpenW
 ```
 env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -o "dist/lietuviskatv_linux_mips_softfloat.exe" src/*.go
 ```
+Daugiau info https://golang.org/doc/install/source#environment
