@@ -1,4 +1,4 @@
-# lietuviska-tv
+# Nemokama lietuviška televizija
 
 [![Github All Releases](https://img.shields.io/github/downloads/erkexzcx/lietuviska-tv/total.svg)](https://github.com/erkexzcx/lietuviska-tv/releases)
 
@@ -16,12 +16,12 @@ Viskas imama iš viešai prieinamų stream'ų internetu. Iš pačių LNK ir TV3 
 # Instaliacija
 
 1. Perskaitote [#Troubleshooting](#Troubleshooting) ir įsitikinate, kad viskas jus tenkina.
-2. Atsisiunčiate sukompiliuotą executable iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
+2. Atsisiunčiate binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
 3. Paleidžiate atsisiųstą executable. Kad nereiktų jokių SystemD services rašyt, aš naudoju tiesiog tokią cronjob eilutę:
 ```
 @reboot nohup /home/erikas/livetv-linux-arm &
 ```
-Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/livetv-linux-arm &`.
+Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/livetv-linux-arm &` (`tmux` irgi variantas).
 
 4. IPTV playlistas bus pasiekiamas per `http://<ipaddress>:8989/iptv`
 
@@ -42,3 +42,23 @@ LNK rodo tokiu principu - kai kuriuo nors metu per LNK GO rodo kokią nors tiesi
 ## Neveikia ant Windows
 
 Netestavau. Windows sucks - naudok Linux. Sukompilinau Windowsams, nes buvo tokia galimybė.
+
+## Nesuprantu platformų/architektūrų pavadinimų, tačiau noriu įsirašyti ant RPI2
+
+```
+lietuviskatv_freebsd_x86_64 --> FreeBSD platformai, 64bit (pvz pfsense sistemai)
+lietuviskatv_linux_aarch64 --> Linux, aarch46 (armv8) (rpi3 su 64bit OS, rpi4 su 64bit OS)
+lietuviskatv_linux_arm --> Linux, arm (armv5 ir armv6) (rpi0, rpi1)
+lietuviskatv_linux_armhf --> Linux, armhf (armv7) (rpi2, rpi3 su 32bit OS, rpi4 su 32bit OS)
+lietuviskatv_linux_i386 --> Linux, 32bit
+lietuviskatv_linux_x86_64 --> Linux, 64bit
+lietuviskatv_windows_x86_64.exe --> Windows, 64bit
+lietuviskatv_windows_i386.exe --> Windows, 32bit
+```
+
+## Trūksta norimos platformos
+
+Jei nori pasileisti ant platformos, kurios nėra pateiktuose binaries (pvz OpenWRT routeris), teks susikompiliuoti pačiam. Pasiruošiant Linuxe golang'ą, atsisiunčiat projektą ir tada:
+```
+env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -o "dist/lietuviskatv_linux_mips_softfloat.exe" src/*.go
+```
