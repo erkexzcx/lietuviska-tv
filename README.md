@@ -19,9 +19,9 @@ Viskas imama iš viešai prieinamų stream'ų internetu. Iš pačių LNK ir TV3 
 2. Atsisiunčiate binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
 3. Paleidžiate atsisiųstą executable. Kad nereiktų jokių SystemD services rašyt, aš naudoju tiesiog tokią cronjob eilutę:
 ```
-@reboot nohup /home/erikas/livetv-linux-arm &
+@reboot nohup /home/erikas/lietuviskatv_linux_armhf &
 ```
-Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/livetv-linux-arm &` (`tmux` irgi variantas).
+Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/lietuviskatv_linux_armhf &` (`tmux` irgi variantas).
 
 4. IPTV playlistas bus pasiekiamas per `http://<ipaddress>:8989/iptv`
 
