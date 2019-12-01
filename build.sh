@@ -6,40 +6,21 @@ if ! [ -d "src" ]; then
 	exit 1
 fi
 
-package_name="livetv"
+# Prepare output directory:
+mkdir -p dist
 
-platforms=(
-	"linux/386"
-	"linux/amd64"
-	"linux/arm"
-	"linux/arm64"
-	"linux/mips"
-	"linux/mips64"
-	"linux/mips64le"
-	"linux/mipsle"
-	"linux/ppc64"
-	"linux/ppc64le"
-	"linux/s390x"
-	"windows/386"
-	"windows/amd64"
-)
+# Build Linux binaries:
+env GOOS=linux GOARCH=386 go build -o "dist/lietuviskatv_linux_i386" src/*.go             # Linux i386
+env GOOS=linux GOARCH=amd64 go build -o "dist/lietuviskatv_linux_x86_64" src/*.go         # Linux 64bit
 
-for platform in "${platforms[@]}"; do
+# Build Linux ARM binaries:
+env GOOS=freebsd GOARCH=amd64 go build -o "dist/lietuviskatv_freebsd_x86_64" src/*.go     # FreeBSD 64bit
 
-    platform_split=(${platform//\// })
-    GOOS=${platform_split[0]}
-    GOARCH=${platform_split[1]}
-    output_name=$package_name'-'$GOOS'-'$GOARCH
-    if [ $GOOS = "windows" ]; then
-        output_name+='.exe'
-    fi
+# Build freebsd binary:
+env GOOS=linux GOARCH=arm GOARM=5 go build -o "dist/lietuviskatv_linux_arm" src/*.go      # Linux armv5/armel/arm (it also works on armv6)
+env GOOS=linux GOARCH=arm GOARM=7 go build -o "dist/lietuviskatv_linux_armhf" src/*.go    # Linux armv7/armhf
+env GOOS=linux GOARCH=arm64 go build -o "dist/lietuviskatv_linux_aarch64" src/*.go        # Linux armv8/aarch64
 
-    env GOOS=$GOOS GOARCH=$GOARCH go build -o dist/$output_name src/*.go
-    if [ $? -ne 0 ]; then
-        echo 'Error occured during GO build! Exitting...'
-        exit 1
-    fi
-
-done
-
-echo 'Building completed!'
+# Build Windows binaries (oh God whyyy):
+env GOOS=windows GOARCH=386 go build -o "dist/lietuviskatv_windows_i386.exe" src/*.go     # Windows 32bit
+env GOOS=windows GOARCH=amd64 go build -o "dist/lietuviskatv_windows_x86_64.exe" src/*.go # Windows 64bit
