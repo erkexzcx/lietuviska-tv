@@ -21,13 +21,18 @@ func main() {
 		}
 	}()
 
+	// This provides a channels list, where URLs leads to the same server where you are hosting THIS application
 	http.HandleFunc("/iptv", func(w http.ResponseWriter, r *http.Request) {
-		tvChannels.renderPlaylist(&w)
+		tvChannels.renderPlaylist(&w, r.Host)
 	})
 
-	http.HandleFunc("/epg", func(w http.ResponseWriter, r *http.Request) {
-		// TODO
-	})
+	http.HandleFunc("/channel/", handleFirstm3u8) // First level
+
+	http.HandleFunc("/channel2/", handleSecondm3u8) // Second level
+
+	http.HandleFunc("/channel3/", handleThirdm3u8) // Third level
+
+	http.HandleFunc("/epg", func(w http.ResponseWriter, r *http.Request) { /* TODO */ })
 
 	log.Fatal(http.ListenAndServe(":8989", nil))
 
