@@ -2,7 +2,7 @@
 
 [![Github All Releases](https://img.shields.io/github/downloads/erkexzcx/lietuviska-tv/total.svg)](https://github.com/erkexzcx/lietuviska-tv/releases)
 
-Ši programa sugeneruoja šių kanalų `m3u` (_IPTV playlist_) compatible playlist'ą, kurį galima naudoti Kodi/VLC programose ir taip nemokamai žiūrėti lietuvišką TV internetu.
+Ši programa veikia kaip IPTV tarpinis serveris, kuris sugeneruoja šių kanalų `m3u` (_IPTV playlist_) compatible playlist'ą, kurį galima naudoti Kodi/VLC programose ir taip nemokamai žiūrėti lietuvišką TV internetu:
 
 * LNK HD
 * TV3 HD
@@ -16,22 +16,17 @@ Viskas imama iš viešai prieinamų stream'ų internetu. Iš pačių LNK ir TV3 
 # Naudojimas
 
 1. Perskaitote [#Troubleshooting](#Troubleshooting) ir įsitikinate, kad viskas jus tenkina.
-2. Atsisiunčiate binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
-3. Paleidžiate atsisiųstą executable. Kad nereiktų jokių SystemD services rašyt, aš naudoju tiesiog tokią cronjob eilutę:
+2. Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
+3. Paleidžiate atsisiųstą executable. Kad nereiktų jokių SystemD services rašyt, aš tiesiog naudoju `tmux` ir palieku veikti background'e:
 ```
-@reboot nohup /home/erikas/lietuviskatv_linux_armhf &
+./lietuviskatv_linux_armhf &
 ```
-Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/lietuviskatv_linux_armhf &` (`tmux` irgi variantas).
 
 4. IPTV playlistas bus pasiekiamas per `http://<ipaddress>:8989/iptv`
 
-Jei norit pasileisti per Windows, atsidarot powershell, pasileidžiat per jį atsisiųstą .exe failą ir tada naršyklėje `127.0.0.1:8989/iptv`. Realiai viskas tas pats, tačiau tai vistiek nekeičia fakto, kad Windows sucks. :)
+**Newbies** - Jei norit pasileisti per/ant Windows, atsidarot powershell, pasileidžiat per jį atsisiųstą .exe failą (google kaip) ir tada naudojate `127.0.0.1:8989/iptv` ant to pačio device. Na o jei norit žiūrėt šią IPTV ant kito prietaiso (pvz Raspberry Pi su OSMC/LibreELEC), tuomet naudokit Windowsų kompiuterio IP adresą (google kaip susirast) (pvz `http://192.168.1.56:8989/iptv`). P.S. Binaries yra pateikti ir raspberiams, todėl nebūtina naudot Windwosų. *Juk Windows - sucks!*
 
 # Troubleshooting
-
-## Nieko nerodo (arba Error 403)
-
-Veikia tik iš to paties public IP. Tai reiškia, kad tiek serveris, tiek jūs turite būti po tuo pačiu public IP adresu.
 
 ## TV3 atsilieka garsas
 
@@ -39,13 +34,9 @@ Nežinau kas konkrečiai dėl to kaltas, nes šitas issue galioja tik VLC player
 
 ## Nerodo LNK
 
-LNK rodo tokiu principu - kai kuriuo nors metu per LNK GO rodo kokią nors tiesioginią transliaciją, scriptas tuo metu gali nuparsinti `M3U8` nuorodą per kurią galima žiūrėti LNK TV. Kai transliacija baigiasi - nuorodos nebelieka, tačiau scriptas iš atminties išsitraukia paskutinę galimą nuorodą kuri dažniausiai veikia iki kitos dienos pietų.
+LNK rodo tokiu principu - kai kuriuo nors metu per LNK GO rodo kokią nors tiesioginę transliaciją, scriptas tuo metu gali nuparsinti `M3U8` nuorodą, per kurią galima žiūrėti LNK TV. Kai transliacija baigiasi - nuorodos nebelieka, tačiau scriptas iš atminties išsitraukia paskutinę galimą nuorodą, kuri dažniausiai veikia iki kitos dienos pietų.
 
-## Neveikia ant Windows
-
-Netestavau. Windows sucks - naudok Linux. Sukompilinau Windowsams, nes buvo tokia galimybė.
-
-## Nesuprantu platformų/architektūrų pavadinimų, tačiau noriu įsirašyti ant RPI2
+## Reikia pagalbos dėl platformų pavadinimų. Pvz noriu įsirašyti ant RPI2
 
 ```
 lietuviskatv_freebsd_x86_64 --> FreeBSD platformai, 64bit (pvz pfsense sistemai)
@@ -60,8 +51,8 @@ lietuviskatv_windows_i386.exe --> Windows, 32bit
 
 ## Trūksta norimos platformos
 
-Jei nori pasileisti ant platformos, kurios nėra pateiktuose binaries (pvz OpenWRT routeris), teks susikompiliuoti pačiam. Pasiruošiant Linuxe golang'ą, atsisiunčiat projektą ir tada:
+Jei nori pasileisti ant platformos, kurios nėra pateiktuose binaries (pvz OpenWRT routeris), teks susikompiliuoti pačiam. Pasiruošiant Linuxe golang'ą, atsisiunčiat projektą ir tada (pavyzdžiui MIPS softfloat platformai - kai kurie OpenWRT routeriai naudoja):
 ```
 env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -o "dist/lietuviskatv_linux_mips_softfloat.exe" src/*.go
 ```
-Daugiau info https://golang.org/doc/install/source#environment
+Daugiau info apie galimas architektūras ir galimus buildinimo parametrus https://golang.org/doc/install/source#environment
