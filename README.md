@@ -53,6 +53,6 @@ lietuviskatv_windows_i386.exe --> Windows, 32bit
 
 Jei nori pasileisti ant platformos, kurios nėra pateiktuose binaries (pvz OpenWRT routeris), teks susikompiliuoti pačiam. Pasiruošiant Linuxe golang'ą, atsisiunčiat projektą ir tada (pavyzdžiui MIPS softfloat platformai - kai kurie OpenWRT routeriai naudoja):
 ```
-env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -o "dist/lietuviskatv_linux_mips_softfloat.exe" src/*.go
+env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags="-s -w" -o "dist/lietuviskatv_linux_mips_softfloat.exe" src/*.go
 ```
 Daugiau info apie galimas architektūras ir galimus buildinimo parametrus https://golang.org/doc/install/source#environment
