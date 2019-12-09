@@ -13,17 +13,19 @@
 
 Viskas imama iš viešai prieinamų stream'ų internetu. Iš pačių LNK ir TV3 rankų, su žiupsneliu hackų :)
 
-# Instaliacija
+# Naudojimas
 
 1. Perskaitote [#Troubleshooting](#Troubleshooting) ir įsitikinate, kad viskas jus tenkina.
 2. Atsisiunčiate binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
 3. Paleidžiate atsisiųstą executable. Kad nereiktų jokių SystemD services rašyt, aš naudoju tiesiog tokią cronjob eilutę:
 ```
-@reboot nohup /home/erikas/livetv-linux-arm &
+@reboot nohup /home/erikas/lietuviskatv_linux_armhf &
 ```
-Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/livetv-linux-arm &` (`tmux` irgi variantas).
+Arba paprastai paleidžiu ir palieku veikti `nohup /home/erikas/lietuviskatv_linux_armhf &` (`tmux` irgi variantas).
 
 4. IPTV playlistas bus pasiekiamas per `http://<ipaddress>:8989/iptv`
+
+Jei norit pasileisti per Windows, atsidarot powershell, pasileidžiat per jį atsisiųstą .exe failą ir tada naršyklėje `127.0.0.1:8989/iptv`. Realiai viskas tas pats, tačiau tai vistiek nekeičia fakto, kad Windows sucks. :)
 
 # Troubleshooting
 
