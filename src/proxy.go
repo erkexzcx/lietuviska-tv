@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -58,15 +57,9 @@ func handleFirstm3u8(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		print404(w, err)
-		return
-	}
-
 	// Print line by line, and if it doesn't start with '#' - append URL for next step:
 	w.WriteHeader(http.StatusOK)
-	scanner := bufio.NewScanner(bytes.NewReader(body))
+	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
@@ -119,15 +112,9 @@ func handleSecondm3u8(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		print404(w, err)
-		return
-	}
-
 	// Print line by line, and if it doesn't start with '#' - append URL for next step:
 	w.WriteHeader(http.StatusOK)
-	scanner := bufio.NewScanner(bytes.NewReader(body))
+	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
