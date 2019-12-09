@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sync"
 	"time"
 )
 
@@ -16,8 +15,11 @@ func main() {
 	// Update LNK group channels in the background
 	go func() {
 		for {
-			generateLnkGroup()
-			time.Sleep(10 * time.Minute)
+			go generateLietuvosRytas()
+			go generateLRT()
+			go generateLRTPlius()
+			go generateLnkGroup()
+			time.Sleep(15 * time.Minute)
 		}
 	}()
 
@@ -38,9 +40,7 @@ func main() {
 
 }
 
-func generateLRT(wg *sync.WaitGroup) {
-	defer wg.Done()
-
+func generateLRT() {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV1")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -56,9 +56,7 @@ func generateLRT(wg *sync.WaitGroup) {
 	tvChannels.updateURL("LRT", url)
 }
 
-func generateLRTPlius(wg *sync.WaitGroup) {
-	defer wg.Done()
-
+func generateLRTPlius() {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV2")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -74,9 +72,7 @@ func generateLRTPlius(wg *sync.WaitGroup) {
 	tvChannels.updateURL("LRT Plius", url)
 }
 
-func generateLietuvosRytas(wg *sync.WaitGroup) {
-	defer wg.Done()
-
+func generateLietuvosRytas() {
 	lietuvosRytasURL, err := downloadContent("https://lib.lrytas.lt/geoip/get_token_live.php")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)

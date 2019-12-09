@@ -53,17 +53,6 @@ type tvchannel struct {
 }
 
 func (tvList tvChannelsList) renderPlaylist(w *http.ResponseWriter, addressHost string) {
-
-	// Some channels are always available, just direct link is needed to be parsed
-	var wg sync.WaitGroup
-	wg.Add(3)
-
-	go generateLietuvosRytas(&wg)
-	go generateLRT(&wg)
-	go generateLRTPlius(&wg)
-
-	wg.Wait()
-
 	fmt.Fprintln(*w, "#EXTM3U")
 	tvChannelsMutex.Lock()
 	for title, channel := range tvList {
