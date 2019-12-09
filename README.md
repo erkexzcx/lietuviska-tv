@@ -19,7 +19,7 @@ Viskas imama iš viešai prieinamų stream'ų internetu. Iš pačių LNK ir TV3 
 2. Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases).
 3. Paleidžiate atsisiųstą executable. Kad nereiktų jokių SystemD services rašyt, aš tiesiog naudoju `tmux` ir palieku veikti background'e:
 ```
-./lietuviskatv_linux_armhf &
+./lietuviskatv_linux_armhf
 ```
 
 4. IPTV playlistas bus pasiekiamas per `http://<ipaddress>:8989/iptv`
