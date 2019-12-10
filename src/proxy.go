@@ -16,7 +16,7 @@ func print404(w http.ResponseWriter, customMessage interface{}) {
 }
 
 func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
-	reqPath := strings.Replace(r.URL.Path, "/channel/", "", 1)
+	reqPath := strings.Replace(r.URL.Path, "/iptv/", "", 1)
 	reqPathParts := strings.SplitN(reqPath, "/", 2)
 	reqPathPartsLen := len(reqPathParts)
 
@@ -87,9 +87,9 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
-			line = "/channel/" + encodedChannelName + "/" + line
+			line = "http://" + r.Host + "/iptv/" + encodedChannelName + "/" + line
 		} else if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
-			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"/channel/"+encodedChannelName+"/")
+			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/iptv/"+encodedChannelName+"/")
 		}
 		w.Write([]byte(line + "\n"))
 	}

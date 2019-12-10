@@ -23,12 +23,8 @@ func main() {
 		}
 	}()
 
-	// This provides a channels list, where URLs leads to the same server where you are hosting THIS application
 	http.HandleFunc("/iptv", renderPlaylist)
-
-	// All links from /iptv will be converted to this server's URL, /channel/ path,
-	// so this acts as a very simple proxy
-	http.HandleFunc("/channel/", handleChannelRequest)
+	http.HandleFunc("/iptv/", handleChannelRequest)
 
 	log.Fatal(http.ListenAndServe(":8989", nil))
 
