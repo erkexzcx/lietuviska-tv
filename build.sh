@@ -6,6 +6,7 @@ if ! [ -d "src" ]; then
 	exit 1
 fi
 
+# Remove old binaries (if any)
 rm -rf dist
 
 # Build Linux binaries:
@@ -21,7 +22,7 @@ env GOOS=freebsd GOARCH=amd64 go build -ldflags="-s -w" -o "dist/lietuviskatv_fr
 # Build MacOS binary:
 env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o "dist/lietuviskatv_darwin_x86_64" src/*.go       # Darwin 64bit
 
-# Build Windows binaries (oh God whyyy):
+# Build Windows binaries:
 env GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o "dist/lietuviskatv_windows_i386.exe" src/*.go     # Windows 32bit
 env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o "dist/lietuviskatv_windows_x86_64.exe" src/*.go # Windows 64bit
 
