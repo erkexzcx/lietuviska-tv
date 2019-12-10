@@ -28,13 +28,8 @@ func main() {
 		tvChannels.renderPlaylist(&w, r.Host)
 	})
 
-	http.HandleFunc("/channel/", handleFirstm3u8) // First level
-
-	http.HandleFunc("/channel2/", handleSecondm3u8) // Second level
-
-	http.HandleFunc("/channel3/", handleThirdm3u8) // Third level
-
-	http.HandleFunc("/epg", func(w http.ResponseWriter, r *http.Request) { /* TODO */ })
+	http.HandleFunc("/channel/", handleChannelRequest)
+	http.HandleFunc("/link/", handleLinkRequest)
 
 	log.Fatal(http.ListenAndServe(":8989", nil))
 

@@ -16,11 +16,13 @@ func print404(w http.ResponseWriter, customMessage interface{}) {
 	w.Write([]byte("404 page not found"))
 }
 
-var urlChannelRe = regexp.MustCompile(`^\/channel\/(.+).m3u8$`)
+var regexChannelWithURL = regexp.MustCompile(`^\/\w+\/([^\/]+)\/(.+)$`)
 
-func handleFirstm3u8(w http.ResponseWriter, r *http.Request) {
+var regexChannelOnly = regexp.MustCompile(`^\/channel\/([^\/]+)\.m3u8$`)
 
-	match := urlChannelRe.FindStringSubmatch(r.URL.Path)
+func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
+
+	match := regexChannelOnly.FindStringSubmatch(r.URL.Path)
 	if match == nil {
 		print404(w, "Unable to properly extract data from request '"+r.URL.Path+"'!")
 		return
@@ -57,23 +59,23 @@ func handleFirstm3u8(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Print line by line, and if it doesn't start with '#' - append URL for next step:
 	w.WriteHeader(http.StatusOK)
 	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
-			line = "http://" + r.Host + "/channel2/" + encodedChannelName + "/" + line
+			line = "http://" + r.Host + "/link/" + encodedChannelName + "/" + line
+		}
+		if strings.HasPrefix(line, "#") && strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
+			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/link/"+encodedChannelName+"/")
 		}
 		w.Write([]byte(line + "\n"))
 	}
 }
 
-var urlChannel2Re = regexp.MustCompile(`^\/channel2\/([^\/]+)\/(.+)$`)
+func handleLinkRequest(w http.ResponseWriter, r *http.Request) {
 
-func handleSecondm3u8(w http.ResponseWriter, r *http.Request) {
-
-	match := urlChannel2Re.FindStringSubmatch(r.URL.Path)
+	match := regexChannelWithURL.FindStringSubmatch(r.URL.Path)
 
 	if match == nil {
 		print404(w, "Unable to properly extract data from request '"+r.URL.Path+"'!")
@@ -81,7 +83,7 @@ func handleSecondm3u8(w http.ResponseWriter, r *http.Request) {
 	}
 
 	encodedChannelName := match[1]
-	relativePath := match[2]
+	retrievedPath := match[2]
 
 	decodedChannelName, err := url.QueryUnescape(encodedChannelName)
 	if err != nil {
@@ -106,72 +108,34 @@ func handleSecondm3u8(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := http.Get(requiredURL + relativePath)
+	resp, err := http.Get(requiredURL + retrievedPath)
 	if err != nil {
 		print404(w, err)
 		return
 	}
 
-	// Print line by line, and if it doesn't start with '#' - append URL for next step:
 	w.WriteHeader(http.StatusOK)
+	if strings.HasSuffix(r.URL.Path, ".ts") {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			print404(w, err)
+			return
+		}
+
+		w.Write(body)
+		return
+	}
+
 	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
-			line = "http://" + r.Host + "/channel3/" + encodedChannelName + "/" + line
+			line = "http://" + r.Host + "/link/" + encodedChannelName + "/" + line
+		}
+		if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
+			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/link/"+encodedChannelName+"/")
 		}
 		w.Write([]byte(line + "\n"))
 	}
-}
 
-var urlChannel3Re = regexp.MustCompile(`^\/channel3\/([^\/]+)\/(.+)$`)
-
-func handleThirdm3u8(w http.ResponseWriter, r *http.Request) {
-
-	match := urlChannel3Re.FindStringSubmatch(r.URL.Path)
-	if match == nil {
-		print404(w, "Unable to properly extract data from request '"+r.URL.Path+"'!")
-		return
-	}
-
-	encodedChannelName := match[1]
-	relativePath := match[2]
-
-	decodedChannelName, err := url.QueryUnescape(encodedChannelName)
-	if err != nil {
-		print404(w, "Unable to decode channel '"+encodedChannelName+"'!")
-		return
-	}
-
-	tvChannelsMutex.Lock()
-	el, ok := tvChannels[decodedChannelName]
-	tvChannelsMutex.Unlock()
-	if !ok {
-		print404(w, "Unable to find channel '"+decodedChannelName+"'!")
-		return
-	}
-
-	tvChannelsMutex.Lock()
-	requiredURL := el.URLRoot
-	tvChannelsMutex.Unlock()
-
-	if requiredURL == "" {
-		print404(w, "Channel '"+decodedChannelName+"' does not have root URL assigned!")
-		return
-	}
-
-	resp, err := http.Get(requiredURL + relativePath)
-	if err != nil {
-		print404(w, err)
-		return
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		print404(w, err)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Write(body)
 }
