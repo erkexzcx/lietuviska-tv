@@ -14,7 +14,7 @@ type tvChannelsList map[string]*tvchannel
 // Define all tv channels here with their static URLs (if they have):
 var tvChannels = tvChannelsList{
 	"TV3": &tvchannel{
-		Picture: "https://cdn.tvstart.com/img/channel/logo_64_303_1418375193.png",
+		Picture: "https://cdn.tvstart.com/img/channel/logo_64_303_1575262629.png",
 		URL:     "https://cdn7.tvplayhome.lt/live/eds/TV3_LT_HD/HLS_encr/TV3_LT_HD.m3u8",
 		URLRoot: "https://cdn7.tvplayhome.lt/live/eds/TV3_LT_HD/HLS_encr/",
 	},
