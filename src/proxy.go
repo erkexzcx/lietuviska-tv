@@ -65,8 +65,7 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
 			line = "http://" + r.Host + "/link/" + encodedChannelName + "/" + line
-		}
-		if strings.HasPrefix(line, "#") && strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
+		} else if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
 			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/link/"+encodedChannelName+"/")
 		}
 		w.Write([]byte(line + "\n"))
@@ -121,7 +120,6 @@ func handleLinkRequest(w http.ResponseWriter, r *http.Request) {
 			print404(w, err)
 			return
 		}
-
 		w.Write(body)
 		return
 	}
@@ -131,8 +129,7 @@ func handleLinkRequest(w http.ResponseWriter, r *http.Request) {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
 			line = "http://" + r.Host + "/link/" + encodedChannelName + "/" + line
-		}
-		if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
+		} else if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
 			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/link/"+encodedChannelName+"/")
 		}
 		w.Write([]byte(line + "\n"))
