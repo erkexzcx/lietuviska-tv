@@ -1,6 +1,8 @@
-# Nemokama lietuviška televizija internetu
-
+[![License](https://img.shields.io/github/license/erkexzcx/lietuviska-tv)](LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/erkexzcx/lietuviska-tv)](https://goreportcard.com/report/github.com/erkexzcx/lietuviska-tv)
 [![Github All Releases](https://img.shields.io/github/downloads/erkexzcx/lietuviska-tv/total.svg)](https://github.com/erkexzcx/lietuviska-tv/releases)
+
+# Nemokama lietuviška televizija internetu
 
 Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3). Yra galimi tokie kanalai:
 
