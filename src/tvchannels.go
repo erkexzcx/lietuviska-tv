@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"sort"
 	"sync"
 )
 
@@ -55,8 +56,13 @@ type tvchannel struct {
 func (tvList tvChannelsList) renderPlaylist(w *http.ResponseWriter, addressHost string) {
 	fmt.Fprintln(*w, "#EXTM3U")
 	tvChannelsMutex.Lock()
-	for title, channel := range tvList {
-		fmt.Fprintf(*w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", channel.Picture, title, "http://"+addressHost+"/channel/"+url.QueryEscape(title)+".m3u8")
+	titles := make([]string, 0, len(tvList))
+	for tvch := range tvList {
+		titles = append(titles, tvch)
+	}
+	sort.Strings(titles)
+	for _, title := range titles {
+		fmt.Fprintf(*w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tvList[title].Picture, title, "http://"+addressHost+"/channel/"+url.QueryEscape(title)+".m3u8")
 	}
 	tvChannelsMutex.Unlock()
 }
