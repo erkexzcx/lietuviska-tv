@@ -53,23 +53,24 @@ type tvchannel struct {
 	URLRoot string
 }
 
-func (tvList tvChannelsList) renderPlaylist(w *http.ResponseWriter, addressHost string) {
-	fmt.Fprintln(*w, "#EXTM3U")
+func renderPlaylist(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "#EXTM3U")
+
 	tvChannelsMutex.Lock()
-	titles := make([]string, 0, len(tvList))
-	for tvch := range tvList {
+	titles := make([]string, 0, len(tvChannels))
+	for tvch := range tvChannels {
 		titles = append(titles, tvch)
 	}
 	sort.Strings(titles)
 	for _, title := range titles {
-		fmt.Fprintf(*w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tvList[title].Picture, title, "http://"+addressHost+"/channel/"+url.QueryEscape(title)+".m3u8")
+		fmt.Fprintf(w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tvChannels[title].Picture, title, "/channel/"+url.QueryEscape(title)+".m3u8")
 	}
 	tvChannelsMutex.Unlock()
 }
 
 var urlRootRe = regexp.MustCompile(`^(.+/)[^/]+$`)
 
-func (tvList tvChannelsList) updateURL(title, url string) {
+func updateTVChannelURL(title, url string) {
 	match := urlRootRe.FindStringSubmatch(url)
 	noEnding := url
 	if match != nil {

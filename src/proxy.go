@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"regexp"
 	"strings"
 )
 
@@ -16,43 +15,54 @@ func print404(w http.ResponseWriter, customMessage interface{}) {
 	w.Write([]byte("404 page not found"))
 }
 
-var regexChannelWithURL = regexp.MustCompile(`^\/\w+\/([^\/]+)\/(.+)$`)
-
-var regexChannelOnly = regexp.MustCompile(`^\/channel\/([^\/]+)\.m3u8$`)
-
 func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
+	reqPath := strings.Replace(r.URL.Path, "/channel/", "", 1)
+	reqPathParts := strings.SplitN(reqPath, "/", 2)
+	reqPathPartsLen := len(reqPathParts)
 
-	match := regexChannelOnly.FindStringSubmatch(r.URL.Path)
-	if match == nil {
+	// Exit if no channel and/or no path provided:
+	if reqPathPartsLen == 0 {
 		print404(w, "Unable to properly extract data from request '"+r.URL.Path+"'!")
 		return
 	}
 
-	encodedChannelName := match[1]
+	// Remove ".m3u8" from channel name
+	if reqPathPartsLen == 1 {
+		reqPathParts[0] = strings.Replace(reqPathParts[0], ".m3u8", "", 1)
+	}
 
+	// Extract channel name:
+	encodedChannelName := reqPathParts[0]
 	decodedChannelName, err := url.QueryUnescape(encodedChannelName)
 	if err != nil {
 		print404(w, "Unable to decode channel '"+encodedChannelName+"'!")
 		return
 	}
 
+	// Retrieve channel from channels map:
 	tvChannelsMutex.Lock()
-	el, ok := tvChannels[decodedChannelName]
+	channel, ok := tvChannels[decodedChannelName]
 	tvChannelsMutex.Unlock()
 	if !ok {
 		print404(w, "Unable to find channel '"+decodedChannelName+"'!")
 		return
 	}
 
+	// For channel we need URL. For anything else we need URL root:
+	var requiredURL string
 	tvChannelsMutex.Lock()
-	requiredURL := el.URL
+	if reqPathPartsLen == 1 {
+		requiredURL = channel.URL // Value if it has reqPathPartsLen == 1
+	} else {
+		requiredURL = channel.URLRoot + reqPathParts[1] // Value if it has reqPathPartsLen == 2
+	}
 	tvChannelsMutex.Unlock()
-
 	if requiredURL == "" {
 		print404(w, "Channel '"+decodedChannelName+"' does not have URL assigned!")
 		return
 	}
 
+	// Retrieve requiredURL contents
 	resp, err := http.Get(requiredURL)
 	if err != nil {
 		print404(w, err)
@@ -60,60 +70,8 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	scanner := bufio.NewScanner(resp.Body)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if !strings.HasPrefix(line, "#") {
-			line = "http://" + r.Host + "/link/" + encodedChannelName + "/" + line
-		} else if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
-			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/link/"+encodedChannelName+"/")
-		}
-		w.Write([]byte(line + "\n"))
-	}
-}
 
-func handleLinkRequest(w http.ResponseWriter, r *http.Request) {
-
-	match := regexChannelWithURL.FindStringSubmatch(r.URL.Path)
-
-	if match == nil {
-		print404(w, "Unable to properly extract data from request '"+r.URL.Path+"'!")
-		return
-	}
-
-	encodedChannelName := match[1]
-	retrievedPath := match[2]
-
-	decodedChannelName, err := url.QueryUnescape(encodedChannelName)
-	if err != nil {
-		print404(w, "Unable to decode channel '"+encodedChannelName+"'!")
-		return
-	}
-
-	tvChannelsMutex.Lock()
-	el, ok := tvChannels[decodedChannelName]
-	tvChannelsMutex.Unlock()
-	if !ok {
-		print404(w, "Unable to find channel '"+decodedChannelName+"'!")
-		return
-	}
-
-	tvChannelsMutex.Lock()
-	requiredURL := el.URLRoot
-	tvChannelsMutex.Unlock()
-
-	if requiredURL == "" {
-		print404(w, "Channel '"+decodedChannelName+"' does not have root URL assigned!")
-		return
-	}
-
-	resp, err := http.Get(requiredURL + retrievedPath)
-	if err != nil {
-		print404(w, err)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
+	// If path ends with ".ts" - return raw fetched bytes
 	if strings.HasSuffix(r.URL.Path, ".ts") {
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
@@ -124,15 +82,15 @@ func handleLinkRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Write everything, but rewrite links to itself
 	scanner := bufio.NewScanner(resp.Body)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if !strings.HasPrefix(line, "#") {
-			line = "http://" + r.Host + "/link/" + encodedChannelName + "/" + line
+			line = "/channel/" + encodedChannelName + "/" + line
 		} else if strings.Contains(line, "URI=\"") && !strings.Contains(line, "URI=\"\"") {
-			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"http://"+r.Host+"/link/"+encodedChannelName+"/")
+			line = strings.ReplaceAll(line, "URI=\"", "URI=\""+"/channel/"+encodedChannelName+"/")
 		}
 		w.Write([]byte(line + "\n"))
 	}
-
 }

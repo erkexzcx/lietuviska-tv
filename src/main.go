@@ -24,12 +24,11 @@ func main() {
 	}()
 
 	// This provides a channels list, where URLs leads to the same server where you are hosting THIS application
-	http.HandleFunc("/iptv", func(w http.ResponseWriter, r *http.Request) {
-		tvChannels.renderPlaylist(&w, r.Host)
-	})
+	http.HandleFunc("/iptv", renderPlaylist)
 
+	// All links from /iptv will be converted to this server's URL, /channel/ path,
+	// so this acts as a very simple proxy
 	http.HandleFunc("/channel/", handleChannelRequest)
-	http.HandleFunc("/link/", handleLinkRequest)
 
 	log.Fatal(http.ListenAndServe(":8989", nil))
 
@@ -48,7 +47,7 @@ func generateLRT() {
 	level2 := level1["data"].(map[string]interface{})
 	url := fmt.Sprintf("%v", level2["content"])
 
-	tvChannels.updateURL("LRT", url)
+	updateTVChannelURL("LRT", url)
 }
 
 func generateLRTPlius() {
@@ -64,7 +63,7 @@ func generateLRTPlius() {
 	level2 := level1["data"].(map[string]interface{})
 	url := fmt.Sprintf("%v", level2["content"])
 
-	tvChannels.updateURL("LRT Plius", url)
+	updateTVChannelURL("LRT Plius", url)
 }
 
 func generateLietuvosRytas() {
@@ -74,7 +73,7 @@ func generateLietuvosRytas() {
 		os.Exit(1)
 	}
 
-	tvChannels.updateURL("Lietuvos rytas", string(lietuvosRytasURL))
+	updateTVChannelURL("Lietuvos rytas", string(lietuvosRytasURL))
 }
 
 func generateLnkGroup() {
@@ -119,7 +118,7 @@ func processLnkChannel(title, id string) {
 	level2 := level1["videoInfo"].(map[string]interface{})
 
 	url := fmt.Sprintf("%v%v", level2["videoUrl"], level2["secureTokenParams"])
-	tvChannels.updateURL(title, url)
+	updateTVChannelURL(title, url)
 
 }
 
