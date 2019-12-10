@@ -47,6 +47,7 @@ lietuviskatv_linux_i386 --> Linux, 32bit
 lietuviskatv_linux_x86_64 --> Linux, 64bit
 lietuviskatv_windows_x86_64.exe --> Windows, 64bit
 lietuviskatv_windows_i386.exe --> Windows, 32bit
+lietuviskatv_darwin_x86_64 --> MacOS, 64bit
 ```
 
 ## Trūksta norimos platformos
