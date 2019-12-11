@@ -55,8 +55,12 @@ Palaikomų kanalų sąrašas:
 
 # Naudojimas
 
-Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases). Tuomet programa paleidžiame terminale (Windows naudoja Powershell):
+Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases). Tuomet programą paleidžiame terminale:
 ```
+# Kad galėtume ant Linux/FreeBSD executinti (Windowsams nereikia šios komandos):
+chmod +x lietuviskatv_<platform>_<architecture>
+
+# Paleidimas (Windowsuose naudokit Powershell):
 ./lietuviskatv_<platform>_<architecture>
 ```
 Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv`
