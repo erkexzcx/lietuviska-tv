@@ -4,8 +4,9 @@
 
 # Nemokama lietuviška televizija internetu
 
-Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3). Yra galimi tokie kanalai:
+Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3).
 
+Palaikomų kanalų sąrašas:
 * BBC World News
 * BTV
 * CTC Baltija
@@ -67,6 +68,22 @@ P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` 
 ## Ką reiškia "(D)"
 
 Kai kurie kanalai turi nekintančią transliacijos nuorodą, o kiti - dinaminę (ji nuolat kinta). **(D)** reiškia, kad nuoroda yra dinaminė ir toks kanalas gali ne visada veikti. Pamėginkite jį įsijungti vėliau - turėtų rodyti.
+
+## Kaip ši programa veikia?
+
+Programa atlieka kelias funkcijas:
+1. Pateikia `M3U` IPTV kanalų playlist.
+2. Sugeneruoja IPTV kanalų URL (kai kurie yra kintantys arba ne visada galimi).
+3. Veikia kaip tarpininkas (savotiškas proxy serveris) tarp IPTV kliento ir prieinamų IPTV kanalų adresų. Visas IPTV srautas keliauja per šią programą.
+
+Antras punktas labiausiai atspindi šios programos esmę. :)
+
+Šiuo metu esu radęs apie 30 neapribotų IPTV kanalų, kurių `M3U8` adresas nekinta. Visi tie adresai yra įvesti programos kode (AKA hardcoded) ir jie tiesiog "yra". Likę IPTV kanalai (su **(D)** ženklu) yra nuolat kintantys, ir juos reikia išgauti programos pagalba. Pavyzdžiui kanalas *LNK HD (D)* yra internetu prieinamas tik tuomet, kai yra gyvai rodomos LNK vakaro žinios, todėl ši programa būtent tada išgauna rodomos transliacijos nuorodą ir ją laiko atmintyje, o kai nuorodos internete nebelieka - programa iš ją paima iš savo atminties. Tokia nuoroda dažniausiai veikia iki kitos dienos pietų.
+
+Galbūt pastebėjote, kad užkrovus `<address>:8989/iptv` visų kanalų nuorodos yra adresuotos į tokį patį adresą, kuriuo yra pasiekiama programa (paminėkim žodį *proxy*). Tai yra dėl keletos priežąsčių:
+1. Programa kas 10-15 min atnaujina dinaminių kanalų nuorodas, tačiau Kodi to nežino, kad IPTV kanalo nuoroda atsinaujino (ir niekada nesužino - tiesiog taip veikia). Kad priversti Kodi sužinoti naują nuorodą, reikia perkrauti arba pareloadinti *Simple IPTV addon*, antraip kanalas po kiek laiko nebus rodomas. Su šio proxinimo pagalba (URL perrašymu), iš Kodi perspektyvos, IPTV kanalo nuoroda yra visada vienoda, o pati programa ją fone nuolat atnaujina.
+2. Kodi nenorėjo normaliai elgtis su pilna TV3 nuoroda - per Kodi net nerodydavo TV3 kanalo, o telefone rodydavo. Su šio proxinimo pagalba (URL perrašymu), šios problemos nebeliko.
+3. Sugeneruota dinaminio kanalo nuoroda būna su tam tikru sesijos ID, kurį sugeneruoja pats IPTV kanalo serveris. Kiekvieną kart, kai IPTV klientas kreipiasi į serverį, yra tikrinama ir prie sesijos ID pririštas public IP (jeigu jis kitoks - kanalas nerodomas ir gaunamas HTTP 403 error). Su šio proxinimo pagalba (URL perrašymu), IPTV kanalo serverio pusės matomas IP adresas visada bus vienodas, todėl dabar šią programą galima talpinti išoriniame serveryje (pvz Google cloud).
 
 ## Kai kurių kanalų nerodo
 
