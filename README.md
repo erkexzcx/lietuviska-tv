@@ -63,7 +63,7 @@ chmod +x lietuviskatv_<platform>_<architecture>
 # Paleidimas (Windowsuose naudokit Powershell):
 ./lietuviskatv_<platform>_<architecture>
 ```
-Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv`
+Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv` (jei ant to paties kompiuterio: `http://127.0.0.1:8989/iptv`)
 
 P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` ir palikti veikti background'e.
 
