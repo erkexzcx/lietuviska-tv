@@ -6,12 +6,51 @@
 
 Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3). Yra galimi tokie kanalai:
 
-* LNK HD (Perskaitykite [#Troubleshooting](#Troubleshooting))
+* BBC World News
+* BTV
+* CTC Baltija
+* Esports
+* Euronews
+* FOX LT
+* Fight sport
+* INFO TV (D)
+* Kidzone Plus
+* LNK
+* LNK HD (D)
+* LRT
+* LRT HD (D)
+* LRT Plius
+* LRT Plius (D)
+* Lietuvos rytas
+* Lietuvos rytas (D)
+* MTV Hits
+* My Hits
+* NBA
+* NTV Mir Baltic LT
+* NatioNAL Geographic
+* Nick Junior
+* Nickelodeon LT
+* Ohota y Ribalka
+* PBK LT
+* Ren TV Baltic LT
+* Setanta Sports
+* Sony
+* Sony Turbo
+* Sport 1
+* TV1
+* TV1000
+* TV1000 Action
+* TV1000 Ruskoje kino
+* TV3
+* TV3 Film
 * TV3 HD
-* INFO TV HD
-* Lietuvos rytas HD
-* LRT HD
-* LRT Plius HD
+* TV3 Sport
+* TV3 Sport 2
+* TV6
+* TV8
+* Viasat Explore
+* Viasat History
+* Viasat Nature
 
 # Naudojimas
 
@@ -23,17 +62,19 @@ Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/i
 
 P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` ir palikti veikti background'e.
 
-# Troubleshooting
+# FAQ
 
-## LNK
+## Ką reiškia "(D)"
 
-Kai kuriuo nors metu per LNK GO yra rodoma gyvos transliacijos laida (pvz vakaro žinios), ši programa nuparsina rodomos transliacijos nuorodą, kuri yra ne kas kita kaip paties LNK stream'o nuoroda. Kai transliacija baigiasi - stream'o nuorodos nebelieka, tačiau programa iš atminties išsitraukia paskutinę galimą nuorodą, kuri veikia maždaug iki kitos dienos pietų.
+Kai kurie kanalai turi nekintančią transliacijos nuorodą, o kiti - dinaminę (ji nuolat kinta). **(D)** reiškia, kad nuoroda yra dinaminė ir toks kanalas gali ne visada veikti. Pamėginkite jį įsijungti vėliau - turėtų rodyti.
 
-Todėl jeigu šiuo metu nerodo LNK - palauk vakaro su šia įjungta programa. Ji nuparsins LNK nuorodą ir iš karto pradės rodyti.
+## Kai kurių kanalų nerodo
 
-## Atsilieka garsas
+Jei prie kanalo nėra prirašyta **(D)** - greičiausiai ir nerodys. Pamėgink vėliau - gal pradės.
 
-Gali būt, kad ant VLC atsilieka TV3 kanalo garsas. Jei taip nutiko - ant VLC reik spaust dešinį pelės klavišą (ant rodomo video) --> `tools` --> `Track synchronization` --> `Audio track synchronization` ir pakeisti į `-1`.
+## Ant VLC atsilieka garsas
+
+Gali būt, kad ant VLC atsilieka **TV3** kanalo garsas. Jei taip nutiko - ant VLC reik spaust dešinį pelės klavišą (ant rodomo video) --> `tools` --> `Track synchronization` --> `Audio track synchronization` ir pakeisti į `-1`.
 
 ## Nesuprantu platformų ir/ar architektūrų
 
@@ -57,3 +98,7 @@ env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags="-s -w" -o "lietuv
 upx --best "lietuviskatv_linux_mips_softfloat" # Daugiau nei per pusę sumažina sukompiliuoto binary dydį
 ```
 Daugiau informacijos apie galimas platformas ir architektūras: https://golang.org/doc/install/source#environment
+
+## Žinau kanalą, kurį galima žiūrėti internetu, tačiau jo nėra tavo programoje
+
+Pakelk naują issue šiam projektui surašydamas visas detales kur kas ir kaip. Pridėsiu į projektą.

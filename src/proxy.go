@@ -69,6 +69,13 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// If not code 200
+	if resp.StatusCode != 200 {
+		w.WriteHeader(resp.StatusCode)
+		w.Write([]byte("Error"))
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
 
 	// If path ends with ".ts" - return raw fetched bytes
