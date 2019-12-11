@@ -113,7 +113,7 @@ lietuviskatv_windows_i386.exe --> Windows, 32bit
 
 ## Trūksta norimos platformos ir/ar architektūros
 
-Jei norite pasileisti ant platformos ar architektūros, kurios nėra pateiktuose binaries - reikia pačiam sukūrti binary. [Pasiruoškite Linux kompiuteryje Go aplinką](https://golang.org/doc/install), atsisiųskite šį projektą ir tada (pavyzdžiui OpenWRT naudojamai `MIPS` `softfloat`):
+Jei norite pasileisti ant platformos ar architektūros, kurios nėra pateiktuose binaries - reikia pačiam sukūrti binary. Ant Linux įsirašykite Go ([taip](https://golang.org/doc/install) arba [taip](https://www.digitalocean.com/community/tutorials/how-to-install-go-on-debian-9), nes official repos esanti versija yra per sena), atsisiųskite šį projektą ir tada (pavyzdžiui OpenWRT naudojamai `MIPS` `softfloat`):
 ```
 env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags="-s -w" -o "lietuviskatv_linux_mips_softfloat" src/*.go
 upx --best "lietuviskatv_linux_mips_softfloat" # Daugiau nei per pusę sumažina sukompiliuoto binary dydį
