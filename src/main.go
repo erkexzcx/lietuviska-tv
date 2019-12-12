@@ -14,7 +14,7 @@ func main() {
 
 	log.Println("Starting...")
 
-	// Update LNK group channels in the background
+	// Constantly update dynamic channels in the background
 	go func() {
 		for {
 			go generateLietuvosRytas()
