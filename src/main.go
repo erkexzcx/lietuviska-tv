@@ -12,6 +12,8 @@ import (
 
 func main() {
 
+	log.Println("Starting...")
+
 	// Update LNK group channels in the background
 	go func() {
 		for {
@@ -25,6 +27,8 @@ func main() {
 
 	http.HandleFunc("/iptv", renderPlaylist)
 	http.HandleFunc("/iptv/", handleChannelRequest)
+
+	log.Println("Started!")
 
 	log.Fatal(http.ListenAndServe(":8989", nil))
 
