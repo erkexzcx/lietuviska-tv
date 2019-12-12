@@ -80,16 +80,16 @@ func generateLnkGroup() {
 		os.Exit(1)
 	}
 
-	// Find IDs of videos :
+	// Find IDs of videos:
 	var result map[string]interface{}
 	json.Unmarshal(videosJSON, &result)
-	level1 := result["videoGridCurrentLive"].(map[string]interface{})
+	level1 := result["videoGridNotLive"].(map[string]interface{})
 	level2 := level1["videos"].([]interface{})
 	for _, v := range level2 {
 		el := v.(map[string]interface{})
 
 		title := fmt.Sprintf("%v", el["title"])
-		if title == "Žinios" || title == "Labas vakaras, Lietuva" {
+		if title == "LNK HD kanalas internetu!" {
 			id := fmt.Sprintf("%v", el["id"])
 			processLnkChannel("LNK HD (D)", id)
 		} else if title == "INFO TV HD kanalas internetu!" {
