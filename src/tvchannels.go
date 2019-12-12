@@ -245,7 +245,7 @@ var tvChannels = tvChannelsList{
 	},
 }
 
-var tvChannelsMutex = sync.Mutex{}
+var tvChannelsMutex = sync.RWMutex{}
 
 type tvchannel struct {
 	Picture string
