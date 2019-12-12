@@ -19,7 +19,7 @@ func main() {
 			go generateLRT()
 			go generateLRTPlius()
 			go generateLnkGroup()
-			time.Sleep(15 * time.Minute)
+			time.Sleep(2 * time.Hour)
 		}
 	}()
 
