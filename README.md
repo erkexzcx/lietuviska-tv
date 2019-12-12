@@ -71,7 +71,9 @@ P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` 
 
 ## Ką reiškia "(D)"
 
-Kai kurie kanalai turi nekintančią transliacijos nuorodą, o kiti - dinaminę (ji nuolat kinta). **(D)** reiškia, kad nuoroda yra dinaminė ir toks kanalas gali ne visada veikti. Pamėginkite jį įsijungti vėliau - turėtų rodyti.
+Kai kurie kanalai yra pasiekiami per nekintančią (static) nuorodą, o kiti per kintančias (dynamic) nuorodas, kurias reikia sugeneruoti (programa tai atlieka fone, jums to nepastebint). Tokie kanalai su kintančiomis nuorodomis ir yra išskirti su (D) raide.
+
+LNK su (D) raide yra šiek tiek kitoks nei kiti. Nuoroda yra pasiekiama tik tuomet, kai lnk go svetainėje yra rodoma tiesiogine LNK transliacija (pvz vakaro žinios). Transliacijai pasibaigus, nuorodos nebelieka, bet ši programa iš atminties atiduoda paskutinę sugeneruotą nuorodą, kuri dažniausiai veikia iki kitos dienos pietų.
 
 ## Kaip ši programa veikia?
 
@@ -91,7 +93,7 @@ Galbūt pastebėjote, kad užkrovus `<address>:8989/iptv` visų kanalų nuorodos
 
 ## Kai kurių kanalų nerodo
 
-Jei prie kanalo nėra prirašyta **(D)** - greičiausiai ir nerodys. Pamėgink vėliau - gal pradės.
+Pamėgink vėliau - gal pradės. Kai kurių kanalų šeip nerodo, o jei pastebėsit, kad nerodo daugumos (beveik visų) - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues).
 
 ## Ant VLC atsilieka garsas
 
@@ -125,4 +127,4 @@ Daugiau informacijos apie galimas platformas ir architektūras: https://golang.o
 
 ## Žinau kanalą, kurį galima žiūrėti internetu, tačiau jo nėra tavo programoje
 
-Pakelk naują issue šiam projektui surašydamas visas detales kur kas ir kaip. Pridėsiu į projektą.
+Pakelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues) šiam projektui surašydamas visas detales kur kas ir kaip. Pridėsiu į projektą.
