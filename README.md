@@ -55,7 +55,7 @@ Palaikomų kanalų sąrašas:
 
 # Naudojimas
 
-Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases). Tuomet programą paleidžiame terminale:
+Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest). Tuomet programą paleidžiame terminale:
 ```
 # Kad galėtume ant Linux/FreeBSD executinti (Windowsams nereikia šios komandos):
 chmod +x lietuviskatv_<platform>_<architecture>
