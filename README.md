@@ -71,9 +71,7 @@ P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` 
 
 ## Ką reiškia "(D)"
 
-Kai kurie kanalai yra pasiekiami per nekintančią (static) nuorodą, o kiti per kintančias (dynamic) nuorodas, kurias reikia sugeneruoti (programa tai atlieka fone, jums to nepastebint). Tokie kanalai su kintančiomis nuorodomis ir yra išskirti su (D) raide.
-
-LNK su (D) raide yra šiek tiek kitoks nei kiti. Nuoroda yra pasiekiama tik tuomet, kai lnk go svetainėje yra rodoma tiesiogine LNK transliacija (pvz vakaro žinios). Transliacijai pasibaigus, nuorodos nebelieka, bet ši programa iš atminties atiduoda paskutinę sugeneruotą nuorodą, kuri dažniausiai veikia iki kitos dienos pietų.
+Tai yra kanalai, kurių nuorodas reikia sugeneruoti ir nuolat atnaujinti kas kuris laikas (antraip nustos rodyti). Visą tai atlieka šį programa, fone, jums to nepastebint.
 
 ## Kaip ši programa veikia?
 
@@ -82,9 +80,9 @@ Programa atlieka kelias funkcijas:
 2. Sugeneruoja IPTV kanalų URL (kai kurie yra kintantys arba ne visada galimi).
 3. Veikia kaip tarpininkas (savotiškas proxy serveris) tarp IPTV kliento ir prieinamų IPTV kanalų adresų. Visas IPTV srautas keliauja per šią programą.
 
-Antras punktas labiausiai atspindi šios programos esmę. :)
+Paminėtas antras punktas labiausiai atspindi šios programos esmę ir kilmę. :)
 
-Šiuo metu esu radęs apie 30 neapribotų IPTV kanalų, kurių `M3U8` adresas nekinta. Visi tie adresai yra įvesti programos kode (AKA hardcoded) ir jie tiesiog "yra". Likę IPTV kanalai (su **(D)** ženklu) yra nuolat kintantys, ir juos reikia išgauti programos pagalba. Pavyzdžiui kanalas *LNK HD (D)* yra internetu prieinamas tik tuomet, kai yra gyvai rodomos LNK vakaro žinios, todėl ši programa būtent tada išgauna rodomos transliacijos nuorodą ir ją laiko atmintyje, o kai nuorodos internete nebelieka - programa ją paima iš savo atminties. Tokia nuoroda dažniausiai veikia iki kitos dienos pietų.
+Šiuo metu esu radęs apie 30 neapribotų IPTV kanalų, kurių `M3U8` adresas nekinta. Visi tie adresai yra įvesti programos kode (AKA hardcoded) ir jie tiesiog "yra". Likę IPTV kanalai (su **(D)** ženklu) yra nuolat kintantys, ir juos reikia išgauti programos pagalba.
 
 Galbūt pastebėjote, kad užkrovus `<address>:8989/iptv` visų kanalų nuorodos yra adresuotos į tokį patį adresą, kuriuo yra pasiekiama programa (paminėkim žodį *proxy*). Tai yra dėl keletos priežąsčių:
 1. Programa kas 10-15 min atnaujina dinaminių kanalų nuorodas, tačiau Kodi to nežino, kad IPTV kanalo nuoroda atsinaujino (ir niekada nesužino - tiesiog taip veikia). Kad priversti Kodi sužinoti naują nuorodą, reikia perkrauti arba pareloadinti *Simple IPTV addon*, antraip kanalas po kiek laiko nebus rodomas. Su šio proxinimo pagalba (URL perrašymu), iš Kodi perspektyvos, IPTV kanalo nuoroda yra visada vienoda, o pati programa ją fone nuolat atnaujina.
@@ -93,7 +91,7 @@ Galbūt pastebėjote, kad užkrovus `<address>:8989/iptv` visų kanalų nuorodos
 
 ## Kai kurių kanalų nerodo
 
-Pamėgink vėliau - gal pradės. Kai kurių kanalų šeip nerodo, o jei pastebėsit, kad nerodo daugumos (beveik visų) - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues).
+Kai kurių kanalų šeip nerodo. Jeigu pastesbėsi, kad apskritai neberodo - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues).
 
 ## Ant VLC atsilieka garsas
 
@@ -113,6 +111,10 @@ lietuviskatv_windows_x86_64.exe --> Windows, 64bit
 lietuviskatv_windows_i386.exe --> Windows, 32bit
 ```
 
+## Žinau kanalą, kurį galima žiūrėti internetu, tačiau jo nėra tavo programoje
+
+Pakelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues) šiam projektui surašydamas visas detales kur kas ir kaip. Pridėsiu į projektą.
+
 ## Trūksta norimos platformos ir/ar architektūros
 
 Jei norite pasileisti ant platformos ar architektūros, kurios nėra pateiktuose binaries - reikia pačiam sukompiliuoti binary. Ant Linux įsirašykite Go ([štai taip](https://www.digitalocean.com/community/tutorials/how-to-install-go-on-debian-9), nes official repos esanti versija dažniausiai būna per sena), atsisiųskite šį projektą ir tada (pavyzdžiui OpenWRT naudojamai `MIPS` `softfloat`):
@@ -124,7 +126,3 @@ env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags="-s -w" -o "lietuv
 upx --best "lietuviskatv_linux_mips_softfloat" 
 ```
 Daugiau informacijos apie galimas platformas ir architektūras: https://golang.org/doc/install/source#environment
-
-## Žinau kanalą, kurį galima žiūrėti internetu, tačiau jo nėra tavo programoje
-
-Pakelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues) šiam projektui surašydamas visas detales kur kas ir kaip. Pridėsiu į projektą.
