@@ -14,6 +14,9 @@ func main() {
 
 	log.Println("Starting...")
 
+	// Initiate URLRoot (for static channels, before starting this app)
+	initiateURLRoots()
+
 	// Constantly update dynamic channels in the background
 	go func() {
 		for {
