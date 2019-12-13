@@ -110,7 +110,7 @@ func generateLnkGroup() {
 			} else if title == "INFO TV HD kanalas internetu!" {
 				infoTVFound = true
 				id := fmt.Sprintf("%v", el["id"])
-				processLnkChannel("INFO TV (D)", id)
+				processLnkChannel("INFO TV HD (D)", id)
 			}
 
 		}
