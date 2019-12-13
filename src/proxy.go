@@ -68,7 +68,6 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 		print404(w, err)
 		return
 	}
-
 	defer resp.Body.Close()
 
 	// If not code 200

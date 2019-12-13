@@ -112,7 +112,6 @@ func generateLnkGroup() {
 				id := fmt.Sprintf("%v", el["id"])
 				processLnkChannel("INFO TV HD (D)", id)
 			}
-
 		}
 	}
 	parseVideos(&OnlineVideos)
