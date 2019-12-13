@@ -122,7 +122,8 @@ Jei norite pasileisti ant platformos ar architektūros, kurios nėra pateiktuose
 # Binary kompiliavimo komanda:
 env GOOS=linux GOARCH=mips GOMIPS=softfloat go build -ldflags="-s -w" -o "lietuviskatv_linux_mips_softfloat" src/*.go
 
-# Jei nori daugiau nei per pusę sumažinti binary dydį:
+# Jei nori daugiau nei per pusę sumažinti binary dydį, tačiau binary gali
+# nepasileisti arba nesusispausti
 upx --best "lietuviskatv_linux_mips_softfloat" 
 ```
 Daugiau informacijos apie galimas platformas ir architektūras: https://golang.org/doc/install/source#environment

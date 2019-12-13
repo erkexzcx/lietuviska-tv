@@ -26,5 +26,5 @@ env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o "dist/lietuviskatv_dar
 env GOOS=windows GOARCH=386 go build -ldflags="-s -w" -o "dist/lietuviskatv_windows_i386.exe" src/*.go     # Windows 32bit
 env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o "dist/lietuviskatv_windows_x86_64.exe" src/*.go # Windows 64bit
 
-# Compress binaries:
-upx --best dist/*
+# Compress binaries (risk of binary not working at all on some platforms):
+# upx --best dist/*
