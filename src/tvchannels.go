@@ -245,7 +245,7 @@ var tvChannels = tvChannelsList{
 	},
 }
 
-var tvChannelsMutex = sync.RWMutex{}
+var tvMutex = sync.RWMutex{}
 
 type tvchannel struct {
 	Picture string
@@ -256,7 +256,7 @@ type tvchannel struct {
 func renderPlaylist(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "#EXTM3U")
 
-	tvChannelsMutex.RLock()
+	tvMutex.RLock()
 	titles := make([]string, 0, len(tvChannels))
 	for tvch := range tvChannels {
 		titles = append(titles, tvch)
@@ -265,7 +265,7 @@ func renderPlaylist(w http.ResponseWriter, r *http.Request) {
 	for _, title := range titles {
 		fmt.Fprintf(w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tvChannels[title].Picture, title, "http://"+r.Host+"/iptv/"+url.QueryEscape(title)+".m3u8")
 	}
-	tvChannelsMutex.RUnlock()
+	tvMutex.RUnlock()
 }
 
 var urlRootRe = regexp.MustCompile(`^(.+/)[^/]+$`)
@@ -276,8 +276,8 @@ func updateTVChannelURL(title, url string) {
 	if match != nil {
 		noEnding = match[1]
 	}
-	tvChannelsMutex.Lock()
+	tvMutex.Lock()
 	tvChannels[title].URL = url
 	tvChannels[title].URLRoot = noEnding
-	tvChannelsMutex.Unlock()
+	tvMutex.Unlock()
 }
