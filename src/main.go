@@ -132,12 +132,15 @@ func downloadContent(url string) ([]byte, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+
 	if res.StatusCode != 200 {
 		return nil, fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
 	}
+
 	content, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}
-	return []byte(content), nil
+
+	return content, nil
 }
