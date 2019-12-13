@@ -102,7 +102,7 @@ Gali būt, kad ant VLC atsilieka **TV3** kanalo garsas. Jei taip nutiko - ant VL
 ```
 lietuviskatv_darwin_x86_64 --> MacOS, 64bit
 lietuviskatv_freebsd_x86_64 --> FreeBSD platformai, 64bit (pvz pfsense sistemai)
-lietuviskatv_linux_aarch64 --> Linux, aarch46 (armv8) (rpi3 su 64bit OS, rpi4 su 64bit OS)
+lietuviskatv_linux_aarch64 --> Linux, aarch64 (armv8) (rpi3 su 64bit OS, rpi4 su 64bit OS)
 lietuviskatv_linux_arm --> Linux, arm (armv5 ir armv6) (rpi0, rpi1)
 lietuviskatv_linux_armhf --> Linux, armhf (armv7) (rpi2, rpi3 su 32bit OS, rpi4 su 32bit OS)
 lietuviskatv_linux_i386 --> Linux, 32bit
