@@ -256,7 +256,7 @@ type tvchannel struct {
 func renderPlaylist(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "#EXTM3U")
 
-	tvChannelsMutex.Lock()
+	tvChannelsMutex.RLock()
 	titles := make([]string, 0, len(tvChannels))
 	for tvch := range tvChannels {
 		titles = append(titles, tvch)
@@ -265,7 +265,7 @@ func renderPlaylist(w http.ResponseWriter, r *http.Request) {
 	for _, title := range titles {
 		fmt.Fprintf(w, "#EXTINF:-1 tvg-logo=\"%s\", %s\n%s\n\n", tvChannels[title].Picture, title, "http://"+r.Host+"/iptv/"+url.QueryEscape(title)+".m3u8")
 	}
-	tvChannelsMutex.Unlock()
+	tvChannelsMutex.RUnlock()
 }
 
 var urlRootRe = regexp.MustCompile(`^(.+/)[^/]+$`)

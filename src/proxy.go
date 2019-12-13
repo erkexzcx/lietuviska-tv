@@ -40,9 +40,9 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Retrieve channel from channels map:
-	tvChannelsMutex.Lock()
+	tvChannelsMutex.RLock()
 	channel, ok := tvChannels[decodedChannelName]
-	tvChannelsMutex.Unlock()
+	tvChannelsMutex.RUnlock()
 	if !ok {
 		print404(w, "Unable to find channel '"+decodedChannelName+"'!")
 		return
@@ -50,13 +50,13 @@ func handleChannelRequest(w http.ResponseWriter, r *http.Request) {
 
 	// For channel we need URL. For anything else we need URL root:
 	var requiredURL string
-	tvChannelsMutex.Lock()
+	tvChannelsMutex.RLock()
 	if reqPathPartsLen == 1 {
 		requiredURL = channel.URL // Value if it has reqPathPartsLen == 1
 	} else {
 		requiredURL = channel.URLRoot + reqPathParts[1] // Value if it has reqPathPartsLen == 2
 	}
-	tvChannelsMutex.Unlock()
+	tvChannelsMutex.RUnlock()
 	if requiredURL == "" {
 		print404(w, "Channel '"+decodedChannelName+"' does not have URL assigned!")
 		return
