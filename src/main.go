@@ -87,24 +87,36 @@ func generateLnkGroup() {
 		os.Exit(1)
 	}
 
-	// Find IDs of videos:
 	var result map[string]interface{}
 	json.Unmarshal(videosJSON, &result)
-	level1 := result["videoGridNotLive"].(map[string]interface{})
-	level2 := level1["videos"].([]interface{})
-	for _, v := range level2 {
-		el := v.(map[string]interface{})
 
-		title := fmt.Sprintf("%v", el["title"])
-		if title == "LNK HD kanalas internetu!" {
-			id := fmt.Sprintf("%v", el["id"])
-			processLnkChannel("LNK HD (D)", id)
-		} else if title == "INFO TV HD kanalas internetu!" {
-			id := fmt.Sprintf("%v", el["id"])
-			processLnkChannel("INFO TV (D)", id)
+	// List of videos. Usually TV show, or live TV
+	OnlineVideos := result["videoGridCurrentLive"].(map[string]interface{})["videos"].([]interface{})
+	OfflineVideos := result["videoGridNotLive"].(map[string]interface{})["videos"].([]interface{})
+
+	var lnkFound, infoTVFound bool
+	parseVideos := func(videos *[]interface{}) {
+		for _, v := range *videos {
+			if lnkFound && infoTVFound {
+				break // Both channels already found
+			}
+
+			el := v.(map[string]interface{})
+			title := fmt.Sprintf("%v", el["title"])
+			if title == "LNK HD kanalas internetu!" || title == "Žinios" || title == "Labas vakaras, Lietuva" {
+				lnkFound = true
+				id := fmt.Sprintf("%v", el["id"])
+				processLnkChannel("LNK HD (D)", id)
+			} else if title == "INFO TV HD kanalas internetu!" {
+				infoTVFound = true
+				id := fmt.Sprintf("%v", el["id"])
+				processLnkChannel("INFO TV (D)", id)
+			}
+
 		}
-
 	}
+	parseVideos(&OnlineVideos)
+	parseVideos(&OfflineVideos)
 }
 
 func processLnkChannel(title, id string) {
