@@ -71,10 +71,6 @@ P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` 
 
 # FAQ
 
-## Ką reiškia "(D)"
-
-Tai yra kanalai, kurių nuorodas reikia sugeneruoti ir nuolat atnaujinti kas kuris laikas (antraip nustos rodyti). Visą tai atlieka šį programa, fone, jums to nepastebint.
-
 ## Kaip ši programa veikia?
 
 Programa atlieka kelias funkcijas:
