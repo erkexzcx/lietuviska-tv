@@ -57,20 +57,37 @@ Palaikomų kanalų sąrašas:
 
 # Naudojimas
 
+## Windows
+
+1. Atsisiunčiate naujausią binary (.exe failą) iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest) (pavyzdžiui `lietuviskatv_windows_i386.exe`) ir išsisaugojate kompiuteryje.
+
+2. Kompiuteryje atsidarykite failų naršyklę (file explorer) ir nueikite į tą aplanką (folder), kuriame yra atsisiųstas .exe failas. Tuomet laikykite nuspaudę SHIFT mygtuką ir neatleidę spauskite dešinį pelės klavišą ant balto fono (tame pačiame file explorer/failų naršyklėje). Iššokusiame lange atsiras pasirinkimas *Open PowerShell Window here*. Jį paspauskite ir atsidarys PowerShell aplikacija (terminalas).
+
+3. PowerShell aplikacijoje parašykite (nukopijuokite) komandą būtent taip ir spauskite enter:
+```
+.\lietuviskatv_windows_i386.exe
+```
+Ir paleista programa ekrane parašys `Started!`. Jeigu pamatėte šį teksta - programą sėkmingai paleidote. Palikite ją veikti (neuždarykite PowerShell programos).
+
+4. Atidarykite VLC programą, joje pasirinkite `Medua` --> `Open Network Stream...` ir į matomą laukelį įveskite adresą `http://127.0.0.1:8989/iptv`. Spauskite Enter klavišą ir IPTV pradės rodyti. VLC programoje bus matomas visų kanalų sąrašas ir galėsite pasikeisti matomą kanalą.
+
+## Linux, MacOS ir FreeBSD
+
 Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest) ir paleidžiate terminale.
 
 ```
 # Linux, MacOS ir FreeBSD:
 chmod +x lietuviskatv_<platform>_<architecture>
 ./lietuviskatv_<platform>_<architecture>
-
-# Windows (reikia naudoti PowerShell):
-.\lietuviskatv_windows_<architecture>.exe
 ```
 
 Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv` (jei ant to paties kompiuterio: `http://127.0.0.1:8989/iptv`). Šią nuorodą naudokit ant VLC arba Kodi su *Simple IPTV addon*.
 
 P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` ir palikti veikti background'e.
+
+
+
+
 
 # FAQ
 
