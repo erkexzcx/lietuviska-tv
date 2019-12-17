@@ -50,7 +50,7 @@ func generateLRT() {
 	level2 := level1["data"].(map[string]interface{})
 	url := fmt.Sprintf("%v", level2["content"])
 
-	updateTVChannelURL("LRT HD (D)", url)
+	updateTVChannelURL("LRT HD", url)
 }
 
 func generateLRTPlius() {
@@ -66,7 +66,7 @@ func generateLRTPlius() {
 	level2 := level1["data"].(map[string]interface{})
 	url := fmt.Sprintf("%v", level2["content"])
 
-	updateTVChannelURL("LRT Plius (D)", url)
+	updateTVChannelURL("LRT Plius HD", url)
 }
 
 func generateLietuvosRytas() {
@@ -76,7 +76,7 @@ func generateLietuvosRytas() {
 		os.Exit(1)
 	}
 
-	updateTVChannelURL("Lietuvos rytas (D)", string(lietuvosRytasURL))
+	updateTVChannelURL("Lietuvos rytas HD", string(lietuvosRytasURL))
 }
 
 func generateLnkGroup() {
@@ -106,11 +106,11 @@ func generateLnkGroup() {
 			if title == "LNK HD kanalas internetu!" || title == "Žinios" || title == "Labas vakaras, Lietuva" {
 				lnkFound = true
 				id := fmt.Sprintf("%v", el["id"])
-				processLnkChannel("LNK HD (D)", id)
+				processLnkChannel("LNK HD", id)
 			} else if title == "INFO TV HD kanalas internetu!" {
 				infoTVFound = true
 				id := fmt.Sprintf("%v", el["id"])
-				processLnkChannel("INFO TV HD (D)", id)
+				processLnkChannel("INFO TV HD", id)
 			}
 		}
 	}

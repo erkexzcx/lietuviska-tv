@@ -178,11 +178,11 @@ var tvChannels = tvChannelsList{
 		URL:     "https://cdn7.tvplayhome.lt/live/eds/Nickelodeon/HLS_encr/Nickelodeon.m3u8",
 	},
 	/* Dynamic channels */
-	"LNK HD (D)":         &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_301_1520339152.png"},
-	"INFO TV HD (D)":     &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_326_1467119944.png"},
-	"LRT HD (D)":         &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_306_1488445569.png"},
-	"LRT Plius (D)":      &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_307_1538382450.png"},
-	"Lietuvos rytas (D)": &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_318_1539885851.png"},
+	"LNK HD":            &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_301_1520339152.png"},
+	"INFO TV HD":        &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_326_1467119944.png"},
+	"LRT HD":            &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_306_1488445569.png"},
+	"LRT Plius HD":      &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_307_1538382450.png"},
+	"Lietuvos rytas HD": &tvchannel{Picture: "https://cdn.tvstart.com/img/channel/logo_64_318_1539885851.png"},
 }
 
 var tvMutex = sync.RWMutex{}

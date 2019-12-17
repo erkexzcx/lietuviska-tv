@@ -14,16 +14,16 @@ Palaikomų kanalų sąrašas:
 * Euronews
 * FOX LT
 * Fight sport
-* INFO TV (D)
+* INFO TV HD
 * Kidzone Plus
 * LNK
-* LNK HD (D)
+* LNK HD
 * LRT
-* LRT HD (D)
+* LRT HD
 * LRT Plius
-* LRT Plius (D)
+* LRT Plius HD
 * Lietuvos rytas
-* Lietuvos rytas (D)
+* Lietuvos rytas HD
 * MTV Hits
 * My Hits
 * NBA
@@ -77,12 +77,10 @@ Tai yra kanalai, kurių nuorodas reikia sugeneruoti ir nuolat atnaujinti kas kur
 
 Programa atlieka kelias funkcijas:
 1. Pateikia `M3U` IPTV kanalų playlist.
-2. Sugeneruoja IPTV kanalų URL (kai kurie yra kintantys).
+2. Sugeneruoja keletos IPTV kanalų URL (kai kurie yra kintantys).
 3. Veikia kaip tarpininkas (savotiškas proxy serveris) tarp IPTV kliento ir prieinamų IPTV kanalų adresų. Visas IPTV srautas keliauja per šią programą.
 
-Paminėtas antras punktas labiausiai atspindi šios programos esmę ir kilmę. :)
-
-Šiuo metu esu radęs apie 30 neapribotų IPTV kanalų, kurių `M3U8` adresas nekinta. Visi tie adresai yra įvesti programos kode (AKA hardcoded) ir jie tiesiog "yra". Likę IPTV kanalai (su **(D)** ženklu) yra nuolat kintantys, ir juos reikia išgauti programos pagalba.
+Šiuo metu esu radęs apie 30+ neapribotų IPTV kanalų, kurių `M3U8` adresas nekinta. Visi tie adresai yra įvesti programos kode (AKA hardcoded) ir jie tiesiog "yra". Likę keli kanalai yra nuolat kintantys, ir juos reikia išgauti programos pagalba.
 
 Galbūt pastebėjote, kad užkrovus `<address>:8989/iptv` visų kanalų nuorodos yra adresuotos į tokį patį adresą, kuriuo yra pasiekiama programa (paminėkim žodį *proxy*). Tai yra dėl keletos priežąsčių:
 1. Programa kas 2 valandas atnaujina dinaminių kanalų nuorodas, tačiau Kodi to nežino, kad IPTV kanalo nuoroda atsinaujino (ir niekada nesužino - tiesiog taip veikia). Kad priversti Kodi sužinoti naują nuorodą, reikia perkrauti arba pareloadinti *Simple IPTV addon*, antraip kanalas po kiek laiko nebus rodomas. Su šio proxinimo pagalba (URL perrašymu), iš Kodi perspektyvos, IPTV kanalo nuoroda yra visada vienoda, o pati programa ją fone nuolat atnaujina.
@@ -91,7 +89,7 @@ Galbūt pastebėjote, kad užkrovus `<address>:8989/iptv` visų kanalų nuorodos
 
 ## Kai kurių kanalų nerodo
 
-Kai kurių kanalų šeip nerodo. Jeigu pastesbėsi, kad apskritai neberodo - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues).
+Kai kurių kanalų tiesiog nerodo. Jeigu pastesbėsi, kad apskritai neberodo daugumos arba nustojo rodyti konkretų kanalą - kelk naują [issue](https://github.com/erkexzcx/lietuviska-tv/issues).
 
 ## Ant VLC atsilieka garsas
 
