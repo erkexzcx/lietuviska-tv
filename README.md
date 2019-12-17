@@ -6,6 +6,8 @@
 
 Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3).
 
+**Telegram pokalbių kambarys**: https://t.me/lietuviskaIPTV
+
 Palaikomų kanalų sąrašas:
 * BBC World News
 * BTV
