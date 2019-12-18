@@ -6,6 +6,8 @@
 
 Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3).
 
+Gali greit nustoti rodyti daugumą kanalų (bet ne visus): https://www.facebook.com/INAC.LT/posts/2467077106868896?comment_id=2467099283533345
+
 **Telegram pokalbių kambarys**: https://t.me/lietuviskaIPTV
 
 Palaikomų kanalų sąrašas:
@@ -85,11 +87,11 @@ Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/i
 
 P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` ir palikti veikti background'e.
 
-
-
-
-
 # FAQ
+
+## Ar ši televizija yra vogiama ar kaip nors nelegaliai transliuojama?
+
+Ne. Ši programa ima viešai prieinamus IPTV streamus. Tokio dalyko kaip išorinių sistemų nulaužimas ar IPTV re-streaminimas yra nelegalu, todėl to su šia aplikacija to padaryti negalima. Taip pat neprašykite, kad pridėčiau su kokia nors tam tikra paskyrą pasiekiamų kanalų, nes tai taip pat yra nelegalu.
 
 ## Kaip ši programa veikia?
 
