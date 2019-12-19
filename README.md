@@ -63,15 +63,17 @@ Palaikomų kanalų sąrašas:
 
 1. Atsisiunčiate naujausią binary (.exe failą) iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest) (pavyzdžiui `lietuviskatv_windows_i386.exe`) ir išsisaugojate kompiuteryje.
 
-2. Kompiuteryje atsidarykite failų naršyklę (file explorer) ir nueikite į tą aplanką (folder), kuriame yra atsisiųstas .exe failas. Tuomet laikykite nuspaudę SHIFT mygtuką ir neatleidę spauskite dešinį pelės klavišą ant balto fono (tame pačiame file explorer/failų naršyklėje). Iššokusiame lange atsiras pasirinkimas *Open PowerShell Window here*. Jį paspauskite ir atsidarys PowerShell aplikacija (terminalas).
+2. Atidarykite atsisiųstą EXE failą. Jeigu jums pavyks jį paleisti ir matysite terminalą, kuriame rašys `Started!` - eikite iš kart prie 5 žingsnio. Jeigu nematote `Started!` - eikite prie 3 žingsnio.
 
-3. PowerShell aplikacijoje parašykite (nukopijuokite) komandą būtent taip ir spauskite enter:
+3. Kompiuteryje atsidarykite failų naršyklę (file explorer) ir nueikite į tą aplanką (folder), kuriame yra atsisiųstas .exe failas. Tuomet laikykite nuspaudę SHIFT mygtuką ir neatleidę spauskite dešinį pelės klavišą ant balto fono (tame pačiame file explorer/failų naršyklėje). Iššokusiame lange atsiras pasirinkimas *Open PowerShell Window here* (arba *Open CMD here*). Jį paspauskite ir atsidarys PowerShell aplikacija (terminalas).
+
+4. PowerShell aplikacijoje parašykite (nukopijuokite) komandą būtent taip ir spauskite enter:
 ```
 .\lietuviskatv_windows_i386.exe
 ```
 Ir paleista programa ekrane parašys `Started!`. Jeigu pamatėte šį teksta - programą sėkmingai paleidote. Palikite ją veikti (neuždarykite PowerShell programos).
 
-4. Atidarykite VLC programą, joje pasirinkite `Media` --> `Open Network Stream...` ir į matomą laukelį įveskite adresą `http://127.0.0.1:8989/iptv`. Spauskite Enter klavišą ir IPTV pradės rodyti. VLC programoje bus matomas visų kanalų sąrašas ir galėsite pasikeisti matomą kanalą.
+5. Atidarykite VLC programą, joje pasirinkite `Media` --> `Open Network Stream...` ir į matomą laukelį įveskite adresą `http://127.0.0.1:8989/iptv`. Spauskite Enter klavišą ir IPTV pradės rodyti. VLC programoje bus matomas visų kanalų sąrašas ir galėsite pasikeisti matomą kanalą.
 
 ## Linux, MacOS ir FreeBSD
 
