@@ -91,7 +91,9 @@ P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` 
 
 ## Ar ši televizija yra vogiama ar kaip nors nelegaliai transliuojama?
 
-Ne. Ši programa ima viešai prieinamus IPTV streamus. Tokio dalyko kaip išorinių sistemų nulaužimas ar IPTV re-streaminimas yra nelegalu, todėl to su šia aplikacija to padaryti negalima. Taip pat neprašykite, kad pridėčiau su kokia nors tam tikra paskyrą pasiekiamų kanalų, nes tai taip pat yra nelegalu.
+Ne. Ši programa ima viešai prieinamus IPTV streamus, su kuriais aš neturiu nieko bendro. Tokio dalyko kaip išorinių sistemų nulaužimas, vogtos paskyros naudojimas ar re-streaminimas yra nelegalu, todėl šioje aplikacijoje to niekada nebus.
+
+Atsirado, kas jau [spėjo pareportuoti šią programą intelektinės nuosavybės apsaugos centrui](https://www.facebook.com/INAC.LT/posts/2467077106868896?comment_id=2467099283533345), tačiau atsakomybė krenta ant IPTV streamų tiekėjų, ne ant mano ar jūsų rankų.
 
 ## Kaip ši programa veikia?
 
