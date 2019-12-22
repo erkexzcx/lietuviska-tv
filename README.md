@@ -6,6 +6,8 @@
 
 Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3).
 
+Gali greit nustoti rodyti daugumą kanalų (bet ne visus): https://www.facebook.com/INAC.LT/posts/2467077106868896?comment_id=2467099283533345
+
 **Telegram pokalbių kambarys**: https://t.me/lietuviskaIPTV
 
 Palaikomų kanalų sąrašas:
@@ -57,23 +59,43 @@ Palaikomų kanalų sąrašas:
 
 # Naudojimas
 
-Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest). Tuomet programą paleidžiame terminale:
-```
-# Kad galėtume ant Linux/FreeBSD executinti (Windowsams nereikia šios komandos):
-chmod +x lietuviskatv_<platform>_<architecture>
+## Windows
 
-# Paleidimas (Windowsuose naudokit Powershell):
+1. Atsisiunčiate naujausią binary (.exe failą) iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest) (pavyzdžiui `lietuviskatv_windows_i386.exe`) ir išsisaugojate kompiuteryje.
+
+2. Atidarykite atsisiųstą EXE failą. Jeigu jums pavyks jį paleisti ir matysite terminalą, kuriame rašys `Started!` - eikite iš kart prie 5 žingsnio. Jeigu nematote `Started!` - eikite prie 3 žingsnio.
+
+3. Kompiuteryje atsidarykite failų naršyklę (file explorer) ir nueikite į tą aplanką (folder), kuriame yra atsisiųstas .exe failas. Tuomet laikykite nuspaudę SHIFT mygtuką ir neatleidę spauskite dešinį pelės klavišą ant balto fono (tame pačiame file explorer/failų naršyklėje). Iššokusiame lange atsiras pasirinkimas *Open PowerShell Window here* (arba *Open CMD here*). Jį paspauskite ir atsidarys PowerShell aplikacija (terminalas).
+
+4. PowerShell aplikacijoje parašykite (nukopijuokite) komandą būtent taip ir spauskite enter:
+```
+.\lietuviskatv_windows_i386.exe
+```
+Ir paleista programa ekrane parašys `Started!`. Jeigu pamatėte šį teksta - programą sėkmingai paleidote. Palikite ją veikti (neuždarykite PowerShell programos).
+
+5. Atidarykite VLC programą, joje pasirinkite `Media` --> `Open Network Stream...` ir į matomą laukelį įveskite adresą `http://127.0.0.1:8989/iptv`. Spauskite Enter klavišą ir IPTV pradės rodyti. VLC programoje bus matomas visų kanalų sąrašas ir galėsite pasikeisti matomą kanalą.
+
+## Linux, MacOS ir FreeBSD
+
+Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest) ir paleidžiate terminale.
+
+```
+# Linux, MacOS ir FreeBSD:
+chmod +x lietuviskatv_<platform>_<architecture>
 ./lietuviskatv_<platform>_<architecture>
 ```
+
 Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv` (jei ant to paties kompiuterio: `http://127.0.0.1:8989/iptv`). Šią nuorodą naudokit ant VLC arba Kodi su *Simple IPTV addon*.
 
 P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` ir palikti veikti background'e.
 
 # FAQ
 
-## Ką reiškia "(D)"
+## Ar ši televizija yra vogiama ar kaip nors nelegaliai transliuojama?
 
-Tai yra kanalai, kurių nuorodas reikia sugeneruoti ir nuolat atnaujinti kas kuris laikas (antraip nustos rodyti). Visą tai atlieka šį programa, fone, jums to nepastebint.
+Ne. Ši programa ima viešai prieinamus IPTV streamus, su kuriais aš neturiu nieko bendro. Tokio dalyko kaip išorinių sistemų nulaužimas, vogtos paskyros naudojimas ar re-streaminimas yra nelegalu, todėl šioje aplikacijoje to niekada nebus.
+
+Atsirado, kas jau [spėjo pareportuoti šią programą intelektinės nuosavybės apsaugos centrui](https://www.facebook.com/INAC.LT/posts/2467077106868896?comment_id=2467099283533345), tačiau atsakomybė krenta ant IPTV streamų tiekėjų, ne ant mano ar jūsų rankų.
 
 ## Kaip ši programa veikia?
 
