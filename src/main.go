@@ -17,13 +17,11 @@ func main() {
 	initiateURLRoots()
 
 	// Constantly update dynamic channels in the background
+	updateDynamicChannels()
 	go func() {
 		for {
-			go generateLietuvosRytas()
-			go generateLRT()
-			go generateLRTPlius()
-			go generateLnkGroup()
 			time.Sleep(1 * time.Hour)
+			go updateDynamicChannels()
 		}
 	}()
 

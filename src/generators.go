@@ -7,9 +7,22 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 )
 
-func generateLRT() {
+func updateDynamicChannels() {
+	var wg sync.WaitGroup
+	wg.Add(4) // 4 functions
+
+	generateLRT(&wg)
+	generateLRTPlius(&wg)
+	generateLietuvosRytas(&wg)
+	generateLnkGroup(&wg)
+
+	wg.Wait()
+}
+
+func generateLRT(wg *sync.WaitGroup) {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV1")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -23,9 +36,10 @@ func generateLRT() {
 	url := fmt.Sprintf("%v", level2["content"])
 
 	updateTVChannelURL("LRT HD", url)
+	wg.Done()
 }
 
-func generateLRTPlius() {
+func generateLRTPlius(wg *sync.WaitGroup) {
 	ltvURL, err := downloadContent("https://www.lrt.lt/servisai/stream_url/live/get_live_url.php?channel=LTV2")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -39,9 +53,10 @@ func generateLRTPlius() {
 	url := fmt.Sprintf("%v", level2["content"])
 
 	updateTVChannelURL("LRT Plius HD", url)
+	wg.Done()
 }
 
-func generateLietuvosRytas() {
+func generateLietuvosRytas(wg *sync.WaitGroup) {
 	lietuvosRytasURL, err := downloadContent("https://lib.lrytas.lt/geoip/get_token_live.php")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -49,9 +64,10 @@ func generateLietuvosRytas() {
 	}
 
 	updateTVChannelURL("Lietuvos rytas HD", string(lietuvosRytasURL))
+	wg.Done()
 }
 
-func generateLnkGroup() {
+func generateLnkGroup(wg *sync.WaitGroup) {
 	// First, we need to download JSON from lnk api to see what is currently live:
 	videosJSON, err := downloadContent("https://lnk.lt/api/main/live-page")
 	if err != nil {
@@ -75,6 +91,7 @@ func generateLnkGroup() {
 
 	parseVideos(&OnlineVideos)
 	parseVideos(&OfflineVideos)
+	wg.Done()
 }
 
 func processLnkChannel(id string) {
