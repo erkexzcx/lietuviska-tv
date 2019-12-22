@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"sort"
@@ -219,14 +220,62 @@ func initiateURLRoots() {
 	}
 }
 
-func updateTVChannelURL(title, url string) {
-	URLRootNew := deleteAfterLastSlash(&url)
+func updateTVChannelURL(title, link string) {
+	if !workingChannelURL(link) {
+		return
+	}
+	URLRootNew := deleteAfterLastSlash(&link)
 	tvMutex.Lock()
-	tvChannels[title].URL = url
+	tvChannels[title].URL = link
 	tvChannels[title].URLRoot = URLRootNew
 	tvMutex.Unlock()
 }
 
 func deleteAfterLastSlash(str *string) string {
 	return (*str)[0 : strings.LastIndex(*str, "/")+1]
+}
+
+func workingChannelURL(link string) bool {
+	res, err := http.Get(link)
+
+	// If failed to perform HTTP request
+	if err != nil {
+		return false
+	}
+
+	// If server did not return HTTP code 200
+	if res.StatusCode != 200 {
+		return false
+	}
+
+	// If it doesn't contain something like "#EXT..."
+	content, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return false
+	}
+	if !strings.Contains(string(content), "\n#EXT") {
+		return false
+	}
+
+	return true
+}
+
+func renderStatus(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	tvMutex.RLock()
+	titles := make([]string, 0, len(tvChannels))
+	for tvch := range tvChannels {
+		titles = append(titles, tvch)
+	}
+	sort.Strings(titles)
+	for index, title := range titles {
+		fmt.Fprintf(w, "\t %d. %s...", index, title)
+		if workingChannelURL(tvChannels[title].URL) {
+			fmt.Fprint(w, `<font style="color: green;">OK</font>`)
+		} else {
+			fmt.Fprint(w, `<font style="color: red; font-weight: bold;">Down</font>`)
+		}
+		fmt.Fprintln(w, "<br>")
+	}
+	tvMutex.RUnlock()
 }

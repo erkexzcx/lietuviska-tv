@@ -25,8 +25,11 @@ func main() {
 		}
 	}()
 
+	// Check status of all URLs
+
 	http.HandleFunc("/iptv", renderPlaylist)
 	http.HandleFunc("/iptv/", handleChannelRequest)
+	http.HandleFunc("/status", renderStatus)
 
 	log.Println("Started!")
 

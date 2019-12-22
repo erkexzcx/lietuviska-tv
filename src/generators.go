@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 )
 
@@ -110,39 +109,12 @@ func processLnkChannel(id string) {
 
 	switch videoURL {
 	case "https://live.lnk.lt/lnk_live/tiesiogiai/playlist.m3u8":
-		validateAndAddChannel("INFO TV HD", videoURL+videoURLTokens)
+		updateTVChannelURL("INFO TV HD", videoURL+videoURLTokens)
 	case "https://live.lnk.lt/lnk_live/btv/playlist.m3u8":
-		validateAndAddChannel("BTV HD", videoURL+videoURLTokens)
+		updateTVChannelURL("BTV HD", videoURL+videoURLTokens)
 	case "https://live.lnk.lt/lnk_live/lnk/playlist.m3u8":
-		validateAndAddChannel("LNK HD", videoURL+videoURLTokens)
+		updateTVChannelURL("LNK HD", videoURL+videoURLTokens)
 	}
-}
-
-// IF TV channel is not valid - ignore it and do not update existing URLs
-func validateAndAddChannel(title, link string) {
-	res, err := http.Get(link)
-
-	// If failed to perform HTTP request
-	if err != nil {
-		return
-	}
-
-	// If server did not return HTTP code 200
-	if res.StatusCode != 200 {
-		return
-	}
-
-	// If it doesn't contain something like "#EXT..."
-	content, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return
-	}
-	if !strings.Contains(string(content), "\n#EXT") {
-		return
-	}
-
-	// All good - update:
-	updateTVChannelURL(title, link)
 }
 
 // downloadJSON downloads data. It's basically shortcut for GET request
