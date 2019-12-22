@@ -6,8 +6,6 @@
 
 Ši programa veikia kaip tarpinis serveris tarp IPTV kliento (pvz VLC, Kodi) ir viešai prieinamų ir nemokamų lietuviškų IPTV stream'ų (pvz LNK, TV3).
 
-Gali greit nustoti rodyti daugumą kanalų (bet ne visus): https://www.facebook.com/INAC.LT/posts/2467077106868896?comment_id=2467099283533345
-
 **Telegram pokalbių kambarys**: https://t.me/lietuviskaIPTV
 
 Palaikomų kanalų sąrašas:
@@ -80,7 +78,6 @@ Ir paleista programa ekrane parašys `Started!`. Jeigu pamatėte šį teksta - p
 Atsisiunčiate naujausią binary iš [releases](https://github.com/erkexzcx/lietuviska-tv/releases/latest) ir paleidžiate terminale.
 
 ```
-# Linux, MacOS ir FreeBSD:
 chmod +x lietuviskatv_<platform>_<architecture>
 ./lietuviskatv_<platform>_<architecture>
 ```
