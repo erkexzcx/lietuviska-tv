@@ -73,7 +73,7 @@ Palaikomų kanalų sąrašas:
 ```
 Ir paleista programa ekrane parašys `Started!`. Jeigu pamatėte šį teksta - programą sėkmingai paleidote. Palikite ją veikti (neuždarykite PowerShell programos).
 
-5. Atidarykite VLC programą, joje pasirinkite `Media` --> `Open Network Stream...` ir į matomą laukelį įveskite adresą `http://127.0.0.1:8989/iptv`. Spauskite Enter klavišą ir IPTV pradės rodyti. VLC programoje bus matomas visų kanalų sąrašas ir galėsite pasikeisti matomą kanalą.
+5. Atidarykite VLC programą, joje pasirinkite `Media` --> `Open Network Stream...` ir į matomą laukelį įveskite adresą `http://127.0.0.1:8989/iptv`. Spauskite Enter klavišą ir IPTV pradės rodyti. VLC programoje bus matomas visų kanalų sąrašas ir galėsite pasikeisti matomą kanalą. Naršyklėje atidarius adresą `http://127.0.0.1:8989/status` parodys, kurie kanalai veikia, o kurie ne.
 
 ## Linux, MacOS ir FreeBSD
 
@@ -85,7 +85,7 @@ chmod +x lietuviskatv_<platform>_<architecture>
 ./lietuviskatv_<platform>_<architecture>
 ```
 
-Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv` (jei ant to paties kompiuterio: `http://127.0.0.1:8989/iptv`). Šią nuorodą naudokit ant VLC arba Kodi su *Simple IPTV addon*.
+Ir tuomet IPTV playlist pasiekiamas per šią nuorodą: `http://<address>:8989/iptv` (jei ant to paties kompiuterio: `http://127.0.0.1:8989/iptv`). Šią nuorodą naudokit ant VLC arba Kodi su *Simple IPTV addon*. Naršyklėje atidarius adresą `http://127.0.0.1:8989/status` parodys, kurie kanalai veikia, o kurie ne.
 
 P.S. Linux SystemD service sukursiu ateityje. Šiuo metu patariu naudoti `tmux` ir palikti veikti background'e.
 
