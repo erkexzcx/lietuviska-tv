@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -9,7 +10,13 @@ import (
 	"time"
 )
 
+var (
+	flagPort = flag.String("port", "8989", "port")
+)
+
 func main() {
+
+	flag.Parse()
 
 	log.Println("Starting...")
 
@@ -42,7 +49,7 @@ func main() {
 		fmt.Println()
 	}
 
-	log.Fatal(http.ListenAndServe(":8989", nil))
+	log.Fatal(http.ListenAndServe(":"+*flagPort, nil))
 
 }
 
@@ -57,7 +64,7 @@ func getAvailableURLs() ([]string, error) {
 		if strings.Contains(address, "::") {
 			continue
 		}
-		IPs = append(IPs, "http://"+strings.SplitN(address, "/", 2)[0]+":8989/iptv")
+		IPs = append(IPs, "http://"+strings.SplitN(address, "/", 2)[0]+":"+*flagPort+"/iptv")
 	}
 	return IPs, nil
 }
